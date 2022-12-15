@@ -1,0 +1,83 @@
+{% extends "user_base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}Meus cartões{% endblock %}
+
+{% block content %}
+<main class="container">
+  <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'user_index' %}">Início</a></li>
+      <li class="breadcrumb-item" aria-current="page"><span class="badge bg-warning rounded-pill">Cartões</span></li>
+    </ol>
+  </nav>
+  <div class="row">
+    <div class="col-md-8 col-lg-8 mb-3">
+      <h4 class="card-title mb-3">Editar cartão <span data-feather="edit"></span></h4>
+      <div class="card p-3">
+        <form class="needs-validation" action="{% url 'update_card' card.id %}" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+          {% endfor %}
+
+          <div class="row gy-3">
+            <div class="col-md-8">
+              <label for="cc-name" class="form-label">Nome no cartão *</label>
+              {% render_field form.owner class+="form-control" value=card.owner %}
+              <small class="text-muted">Nome conforme escrito no cartão</small>
+              <div class="invalid-feedback">
+                Digite um nome
+              </div>
+            </div>
+            
+            <div class="col-md-4">
+              <label for="cc-expiration" class="form-label">Validade *</label>
+              {% render_field form.valid_until class+="form-control" value=card.valid_until %}
+              <small class="text-muted">Ex. 00/00</small>
+              <div class="invalid-feedback">
+                Data de validade obrigatória
+              </div>
+            </div>
+
+            <div class="col-md-8">
+              <label for="cc-number" class="form-label">Número do cartão *</label>
+              {% render_field form.number class+="form-control" value=card.number %}
+              <small class="text-muted">Digite os números sem espaço</small>
+              <div class="invalid-feedback">
+                  Digite um número válido de cartão
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label for="cc-cvv" class="form-label">CVV *</label>
+              {% render_field form.cvv class+="form-control" value=card.cvv %}
+              <small class="text-muted">Código de 3 dígitos</small>
+              <div class="invalid-feedback">
+                Código de segurança obrigatório
+              </div>
+            </div>
+          </div>
+
+          <input value="Salvar" class="mt-4 btn btn-warning btn-lg float-end" type="submit"/>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-4 col-lg-4">
+      <h4 class="mb-3">CARTÕES CADASTRADOS <span data-feather="credit-card"></span></h4>
+      {% for card in cards %}
+      <div class="card mb-3">
+        <div class="card-body">
+          <p class="card-title2">{{ card.number }} <img class="d-inline-block float-end" src="{% static 'img/cards/master.png' %}" alt="" srcset=""></p>
+          <p class="card-text">{{ card.owner }}</p>
+          <a href="{% url 'update_card' card.id %}" class="link-warning custom-link">Editar</a> <a href="{% url 'destroy_card' card.id %}" class="link-danger custom-link">Excluir</a>
+        </div>
+      </div>
+      {% empty %}
+        <li>Nenhum cartão cadastrado</li>
+      {% endfor %}
+      
+    </div>
+  </div>
+</main>
+{% endblock %}

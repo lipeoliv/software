@@ -1,0 +1,105 @@
+{% extends "user_base.html" %}
+{% load static %}
+
+{% block title %}Dados Pessoais{% endblock %}
+
+{% block optional_static %}
+<link rel="stylesheet" href="{% static 'css/image-uploader.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/profile-img.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="container">
+  <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'user_index' %}">Início</a></li>
+        <li class="breadcrumb-item" aria-current="page"><span class="badge bg-warning rounded-pill">Dados Pessoais</span></li>
+      </ol>
+  </nav>
+<div class="row">
+  <div class="col-md-8 col-lg-8 mb-3">
+    <h4 class="mb-3">DADOS PESSOAIS <span data-feather="user"></span></h4>
+    <div class="card p-3">
+      <form class="needs-validation" novalidate>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="firstName" class="form-label">Nome completo *</label>
+              <input type="text" class="form-control" id="firstName" placeholder="Nome completo" value="" required>
+              <div class="invalid-feedback">
+                Digite um nome válido
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="lastName" class="form-label">Telefone *</label>
+              <input type="text" class="form-control" id="lastName" placeholder="(99) 9 9999-9999" value="" required>
+              <div class="invalid-feedback">
+                Digite um telefone válido
+              </div>
+            </div>
+            <div class="col-md-12">
+              <label for="email" class="form-label">E-mail * <span class="text-muted">(Login)</span></label>
+              <input type="email" class="form-control" id="email" placeholder="email@provedor.com" disabled>
+              <div class="invalid-feedback">
+                Insira um e-mail válido
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="lastName" class="form-label">CPF *</label>
+              <input type="text" class="form-control" id="lastName" placeholder="000.000.000-00" value="" required>
+              <div class="invalid-feedback">
+                Digite um CPF válido
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="username" class="form-label">RG *</label>
+              <div class="input-group has-validation">
+                <input type="text" class="form-control" id="username" placeholder="000.000.000" required>
+                <div class="invalid-feedback">
+                  Digite o seu RG
+                </div>
+              </div>
+            </div>
+            <div class="">
+              <label for="username" class="form-label">Sexo *</label><br>
+              <div class="form-check form-check-inline">
+                <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
+                <label class="form-check-label" for="credit">Masculino</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
+                <label class="form-check-label" for="debit">Feminino</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required>
+                <label class="form-check-label" for="paypal">Prefiro não informar</label>
+              </div>
+            </div>
+
+            <button class="w-100 btn btn-warning btn-lg" type="submit">Atualizar  dados <span data-feather="arrow-right"></span></button>
+          </div>
+        </form>
+    </div>
+  </div>
+  <div class="col-md-4 col-lg-4 mb-3">
+    <h4 class="mb-3">Imagem de perfil <span data-feather="camera"></span></h4>
+    <div class="card p-3">
+      <form class="needs-validation" novalidate>
+        <div class="avatar-upload">
+          <div class="avatar-edit">
+              <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+              <label for="imageUpload">
+              </label>
+          </div>
+          <div class="avatar-preview">
+              <div id="imagePreview" style="background-image: url(https://avatars.githubusercontent.com/u/36075268?s=400&u=23240aa935fc2b665acbd00b4f3952ed1c68ad43&v=4);">
+              </div>
+          </div>
+          <p id="preview-src" class="mt-3 text-center">Selecione uma imagem</p>
+      </div>
+      <button class="w-100 btn btn-warning btn-lg" type="submit">Atualizar  foto <span data-feather="arrow-right"></span></button>
+      </form>
+    </div>
+  </div>
+</div>
+</main>
+{% endblock %}

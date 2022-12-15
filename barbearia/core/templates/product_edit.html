@@ -1,0 +1,129 @@
+{% extends "user_base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}Início{% endblock %}
+
+{% block optional_static %}
+<!-- Filepond stylesheet -->
+<link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<main class="container">
+  <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'user_index' %}">Início</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'user_products' %}">Meus produtos</a></li>
+      <li class="breadcrumb-item" aria-current="page"><span class="badge bg-warning rounded-pill">Adicionar Produto</span></li>
+    </ol>
+  </nav>
+  <h4 class="card-title mb-3">Adicionar produto <span data-feather="edit"></span></h4>
+  <div class="card p-3">
+    
+    <div class="row">
+        <div class="col-md-12">
+            <form class="needs-validation" action="{% url 'update_product' product.id %}" method="POST" enctype="multipart/form-data" >
+                {% csrf_token %}
+                {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+                <div class="row gy-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="cc-name" class="form-label">Nome do produto</label>
+                        {% render_field form.name class+="form-control" value=product.name placeholder="Nome do produto aqui" %}
+                        <small class="text-muted">Nome que aparecerá no título do anúncio</small>
+                        <div class="invalid-feedback">
+                            {{ form.name.errors }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="cc-number" class="form-label">Preço</label>
+                        {% render_field form.price class+="form-control" value=product.price placeholder="R$ 00.000,00" %}
+                        <small class="text-muted">Digite apenas números</small>
+                        <div class="invalid-feedback">
+                            {{ form.price.errors }}
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="cc-brand" class="form-label">Marca</label>
+                        <select id="{{ form.brand.id }}" class="form-control" name="{{ form.brand.name }}">
+                            {% for choice in form.brand.field.choices %}
+                                {% if choice.0 == product.brand %}
+                                  <option value="{{ choice.0 }}" selected="selected">{{ choice.1 }}</option>
+                                {% else %}
+                                  <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endif %}    
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback">
+                            {{ form.brand.errors }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="cc-color" class="form-label">Categoria</label>
+                        <select id="{{ form.category.id }}" class="form-control" name="{{ form.category.name }}">
+                            {% for choice in form.category.field.choices %}
+                                {% if choice.0 == product.category %}
+                                  <option value="{{ choice.0 }}" selected="selected">{{ choice.1 }}</option>
+                                {% else %}
+                                  <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endif %}    
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback">
+                            {{ form.category.errors }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="cc-number" class="form-label">Descrição</label>
+                        <textarea name="description" cols="40" rows="10" class="form-control" placeholder="Descrição do produto" required="" id="id_description">{{ product.description }}</textarea>
+                        <small class="text-muted">Dê o máximo de detalhes o possível do seu produto</small>
+                        <div class="invalid-feedback">
+                            {{ form.description.errors }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="cc-number" class="form-label">Fotos do produto</label>
+                        <input id="product-images" class="form-control" type="file" name="images" multiple>
+                        <small class="text-muted">Escolha boas imagens para o seu produto</small>
+                        <div class="invalid-feedback">
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="input-images"></div>
+                <a class="mt-4 btn btn-danger btn-lg float-end ms-2" href="{% url 'destroy_product' product.id %}">Excluir</a>
+                <input class="mt-4 btn btn-warning btn-lg float-end" type="submit" value="Atualizar">  
+            </form>
+            <div>
+                {% for image in images %}
+                    <img width="200" height="200" src="{{ image.image.url }}" class="img-thumbnail" alt="">
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
+
+{% block optional_scripts %} 
+<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+<script src="{% static 'js/pond_pt_br.js' %}"></script>
+
+<script>
+    const inputElement = document.querySelector('input[type="file"]');
+    // Create a FilePond instance
+    //const pond = FilePond.create(inputElement);
+    //FilePond.parse(document.body);
+    //console.log(window);
+  
+    //const pt_br = window["pt-br"];
+    //FilePond.setOptions(config);
+</script>
+
+{% endblock %}
