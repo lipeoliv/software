@@ -40,7 +40,7 @@ urlpatterns = [
     path('meusprodutos/atualizar/<uuid:id>', update_product, name='update_product'),
     path('meusprodutos/apagar/<uuid:id>', destroy_product, name='destroy_product'),
     
-    #implementação de registros, feita por felipe 
+    #implementação de registros
     path('login/', login, name='login'),
     path('cadastro/', cadastro, name = 'cadastro')
 
