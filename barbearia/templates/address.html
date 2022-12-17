@@ -1,0 +1,116 @@
+{% extends "user_base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}Meus endereços{% endblock %}
+
+{% block content %}
+<main class="container">
+  <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'user_index' %}">Início</a></li>
+      <li class="breadcrumb-item" aria-current="page"><span class="badge bg-warning rounded-pill">Endereços</span></li>
+    </ol>
+  </nav>
+  <div class="row">
+    <div class="col-md-8 col-lg-8 mb-3">
+      <h4 class="mb-3">ADICIONAR ENDEREÇO</h4>
+      <div class="card p-3">
+        <form class="needs-validation" action="{% url 'user_addresses' %}" method="POST" enctype="multipart/form-data" >
+          {% csrf_token %}
+          {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+          {% endfor %}
+          <div class="row g-3">
+            <div class="col-md-12">
+              <label for="description" class="form-label">Descrição *</label>
+              {% render_field form.description class+="form-control" placeholder="Descrição do endereço" %}
+              <div class="invalid-feedback">
+                {{ form.description.errors }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="zip" class="form-label">CEP *</label>
+              {% render_field form.zip class+="form-control" placeholder="00000-000" %}
+              <div class="invalid-feedback">
+                {{ form.zip.errors }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="address" class="form-label">Logradouro *</label>
+              {% render_field form.public_place class+="form-control" placeholder="Rua Correia de Lemos" %}
+              <div class="invalid-feedback">
+                {{ form.public_place.errors }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="number" class="form-label">Número *</label>
+              {% render_field form.number class+="form-control" placeholder="Número" %}
+              <div class="invalid-feedback">
+                {{ form.number.errors }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="complement" class="form-label">Complemento</label>
+              {% render_field form.complement class+="form-control" placeholder="Número" %}
+              <div class="invalid-feedback">
+                {{ form.complement.errors }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="reference" class="form-label">Referência</label>
+              {% render_field form.reference class+="form-control" placeholder="Ao lado da padaria" %}
+              <div class="invalid-feedback">
+                {{ form.reference.errors }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="neighborhood" class="form-label">Bairro *</label>
+              {% render_field form.neighborhood class+="form-control" placeholder="Bairro" %}
+              <div class="invalid-feedback">
+                {{ form.neighborhood.errors }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="city" class="form-label">Cidade *</label>
+              {% render_field form.city class+="form-control" placeholder="Cidade" %}
+              <div class="invalid-feedback">
+                {{ form.city.errors }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="state" class="form-label">UF</label>
+              {% render_field form.state class+="form-control" %}
+              <div class="invalid-feedback">
+                {{ form.state.errors }}
+              </div>
+            </div>
+          </div>
+          <div class="form-check mt-3 mb-3">
+            {% render_field form.is_main class+="form-check-input" %}
+            <label class="form-check-label" for="default-address">Esse é o meu endereço principal</label>
+          </div>
+          <button class="w-100 btn btn-warning btn-lg mb-3" type="submit">Salvar endereço <span data-feather="arrow-right"></span></button>
+        </form>
+      </div>
+      
+    </div>
+    <div class="col-md-4 col-lg-4">
+      <h4 class="mb-3">ENDEREÇOS CADASTRADOS <span data-feather="home"></span></h4>
+      {% for address in addresses %}
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{ address.description }} {{ address.is_main|yesno:"(Principal)," }}</h5>
+          <p class="card-text">{{ address.public_place }}, n° {{ address.number }}<br> 
+            {{ address.neighborhood }} - {{ address.city }}, {{ address.state }} <br> 
+            {{ address.zip }} <br>
+          </p>
+          <a href="{% url 'update_address' address.id %}" class="link-warning custom-link">Editar</a> <a href="{% url 'destroy_address' address.id %}" class="link-danger custom-link">Excluir</a>
+        </div>
+      </div>
+      {% empty %}
+        <li>Nenhum endereço cadastrado</li>
+      {% endfor %}
+    </div>
+  </div>
+</main>
+{% endblock %}

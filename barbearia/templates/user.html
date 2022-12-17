@@ -1,0 +1,105 @@
+{% extends "user_base.html" %}
+{% load static %}
+
+{% block title %}Início{% endblock %}
+
+{% block content %}
+<main class="container">
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <div class="card h-100">
+        <div class="d-flex align-items-center p-4 h-100">
+          <div class="flex-shrink-0">
+            <img src="https://avatars.githubusercontent.com/u/36075268?s=400&u=23240aa935fc2b665acbd00b4f3952ed1c68ad43&v=4" alt="mdo" width="100" height="100" class="rounded-circle">
+          </div>
+          <div class="d-flex flex-column ms-4 justify-content-center">
+            <h5>Bem vindo, João M. S. Dantas</h5>
+            <span><span data-feather="mail"></span> joaomariasilvad@gmail.com</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <div class="card h-100">
+        <div class="d-flex align-items-center flex-column p-4">
+          <p class="w-100">Crédito disponível</p>
+          <h1 class="w-100 money"><b>R$ 0,00</b></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <h4 class="card-title mt-3">Seu último pedido <span data-feather="shopping-cart"></span></h4>
+      <div class="card p-3">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3">
+              <p><b>Número do pedido</b></p>
+              <p>#515456555</p>
+            </div>
+            <div class="col-md-3">
+              <p><b>Status</b></p>
+              <p class="text-success"><b>Concluído</b></p>
+            </div>
+            <div class="col-md-3">
+              <p><b>Data</b></p>
+              <p>27/06/2021</p>
+            </div>
+            <div class="col-md-3">
+              <p><b>Pagamento</b></p>
+              <p>PIX</p>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-8">
+              <p><b>Endereço</b></p>
+              <p><b>Rua das Camélias, n° 299, Bloco B, apto 201</b> <br> 
+                Lagoa Nova - Currais Novos,RN <br> 
+                59173-000 <br>
+              </p>
+            </div>
+            <div class="col-md-4">
+              <p><b>Sequoia</b></p>
+              
+              <a href="#" class="link-warning custom-link">
+                24239388761116015900010001</a>
+            </div>
+          </div>
+          <div class="mt-3 hori-timeline" dir="ltr">
+            <p><b>Status do pedido</b></p>
+            <ul class="list-inline events mt-3">
+              <li class="list-inline-item event-list">
+                <div class="px-4">
+                  <div class="event-date bg-soft-warning text-light">2 Junho</div>
+                  <h5 class="font-size-16">Pedido recebido</h5>
+                </div>
+              </li>
+              <li class="list-inline-item event-list">
+                <div class="px-4">
+                  <div class="event-date bg-soft-warning text-light">2 Junho</div>
+                  <h5 class="font-size-16">Nota fiscal emitida</h5>
+                </div>
+              </li>
+              <li class="list-inline-item event-list">
+                <div class="px-4">
+                  <div class="event-date bg-soft-warning text-light">3 June</div>
+                  <h5 class="font-size-16">Em processamento</h5>
+                </div>
+              </li>
+              <li class="list-inline-item event-list">
+                <div class="px-4">
+                  <div class="event-date bg-soft-success text-light">5 Junho</div>
+                  <h5 class="font-size-16">Pedido enviado</h5>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- end card -->
+    </div>
+  </div>
+</main>
+{% endblock %}
