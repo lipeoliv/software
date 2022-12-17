@@ -3,9 +3,15 @@ from .forms import AddressForm, CreditCardForm, ProductForm
 from .models import Address, CreditCard, Product, ProductImage  
 
 
-# Create your views here.
+
 def index(request):
     return render(request, 'user.html')
+#implementação de registros 
+def login(request):
+    return render(request, 'login.html') 
+
+def cadastro(request):
+    return render(request, 'cadastro.html')      
 
 def user_data(request):
     return render(request, 'personal.html')
