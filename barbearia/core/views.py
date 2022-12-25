@@ -1,17 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import AddressForm, CreditCardForm, ProductForm
-from .models import Address, CreditCard, Product, ProductImage  
-
-
-
-def index(request):
-    return render(request, 'user.html')
-#implementação de registros 
-def login(request):
-    return render(request, 'login.html') 
-
-def cadastro(request):
-    return render(request, 'cadastro.html')      
+from .models import Address, CreditCard, Product, ProductImage      
 
 def user_data(request):
     return render(request, 'personal.html')
@@ -72,7 +61,6 @@ def destroy_address(request, id):
     address = Address.objects.get(id=id)  
     address.delete()  
     return redirect("user_addresses")  
-
 
 
 # Credit card views
@@ -162,6 +150,7 @@ def update_product(request, id):
         form.save()
         for image in new_images:
             ProductImage.objects.create(name=image.name, product=product, image=image)
+
         return redirect("user_products")  
     
     context = {
