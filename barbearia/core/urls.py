@@ -1,5 +1,5 @@
 from django.urls import path
-
+'''
 # Dados do usuário
 from .views import index, user_data, orders, products, addresses, add_product
 
@@ -11,13 +11,16 @@ from .views import create_credit_card, update_card, destroy_card
 
 # Produtos
 from .views import show_products, create_product, update_product, destroy_product
-
+'''
 
 # name='nomeApp_nomeUrl'
 urlpatterns = [
-    path('', index, name='core_index'),
+    #path('', index, name='core_index'),
 
 
+
+] 
+'''
     path('meusdados/', user_data, name='user_data'),
     path('pedidos/', orders, name='user_orders'),
     #path('meusprodutos/', products, name='user_products'),
@@ -40,5 +43,4 @@ urlpatterns = [
     #path('meusprodutos/detalhar/<uuid:id>', product_detail, name='product_detail'),
     path('meusprodutos/atualizar/<uuid:id>', update_product, name='update_product'),
     path('meusprodutos/apagar/<uuid:id>', destroy_product, name='destroy_product'),
-
-] 
+'''

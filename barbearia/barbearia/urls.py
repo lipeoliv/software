@@ -2,7 +2,7 @@ from django.urls import path, include
 
 # Importação das urls
 from core import urls as core_urls
-from auth import urls as auth_urls
+from authentication import urls as auth_urls
 
 urlpatterns = [
     # Urls da aplicação principal

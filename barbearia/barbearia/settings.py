@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
-    'auth',
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -122,7 +122,7 @@ STATICFILES_DIRS = [
     'static/'
 ]
 
-AUTH_USER_MODEL = 'core.Usuario'
+AUTH_USER_MODEL = 'authentication.Usuario'
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'perfil'

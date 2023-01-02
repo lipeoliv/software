@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from .models import Servico, CartaoCredito, Barbearia, ImagemBarbearia, Agendamento
+from .models import Endereco, Servico, CartaoCredito, Barbearia, ImagemBarbearia, Agendamento
 
 
 class EnderecoUsuarioForm(ModelForm):
@@ -30,15 +30,8 @@ class BarbeariaForm(ModelForm):
     class Meta:  
         model = Barbearia  
         fields = [
-            'data_cadastro',
-            'cep',
-            'logradouro',
-            'numero',
-            'complemento',
-            'referencia',
-            'bairro',
-            'cidade',
-            'estado',
+            'endereco',
+            'proprietario',
             'servicos',
         ]  
 
@@ -57,8 +50,6 @@ class AgendamentoForm(ModelForm):
     class Meta:  
         model = Agendamento  
         fields = [
-            'data_cadastro',
-            'data_reserva',
             'servico',
             'cliente',
             'barbearia',
@@ -69,8 +60,8 @@ class CartaoCreditoForm(ModelForm):
     class Meta:  
         model = CartaoCredito  
         fields = [
-            'owner',
-            'number',
-            'valid_until',
+            'portador',
+            'numero',
+            'validade',
             'cvv'
         ] 

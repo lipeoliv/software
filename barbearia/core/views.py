@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+'''
+
 from .forms import AddressForm, CreditCardForm, ProductForm
 from .models import Address, CreditCard, Product, ProductImage      
 
@@ -165,3 +167,4 @@ def destroy_product(request, id):
     product = Product.objects.get(id=id)  
     product.delete()  
     return redirect("user_products") 
+'''

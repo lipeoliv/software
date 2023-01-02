@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from auth.models import Usuario
+from authentication.models import Usuario
 
 ESTADOS = (
     ('AC', 'Acre'),
@@ -63,13 +63,16 @@ class Endereco(models.Model):
     numero = models.IntegerField('Numero')
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.logradouro + ' ' + self.cep
+
 # poder filtrar por barbearias que disponibilizam determinado serviço
 # o barbeiro poderá cadastrar quais serviços ele disponibiliza em seu estabelecimento
 # ele escolherá o serviço e dirá quanto que ele cobrará na sua barbearia
 class Servico(models.Model):
     id = models.UUIDField('Id', primary_key=True, default=uuid.uuid4, editable=False)
     nome = models.CharField('Nome', max_length=4, choices=TIPOS_SERVICOS)
-    preço = models.DecimalField('Preço', max_digits=5, decimal_places=2)
+    preco = models.DecimalField('Preço', max_digits=5, decimal_places=2)
     tempo_estimado = models.IntegerField('Tempo Estimado') # Em minutos
 
 
@@ -86,6 +89,9 @@ class Barbearia(models.Model):
     
     # serviços que podem ser ofertados pela barbearia
     servicos = models.ManyToManyField(Servico, related_name='barbearias')
+
+    def __str__(self):
+        return self.endereco
 
 
 class ImagemBarbearia(models.Model):
