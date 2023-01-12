@@ -32,7 +32,7 @@ class BarbeariaForm(ModelForm):
         fields = [
             'endereco',
             'proprietario',
-            'servicos',
+            'cnpj'
         ]  
 
 

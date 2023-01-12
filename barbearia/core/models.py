@@ -60,12 +60,31 @@ class Endereco(models.Model):
     bairro = models.CharField('Bairro', max_length=100)
     cidade = models.CharField('Cidade', max_length=50)
     estado = models.CharField('Estado', max_length=2, choices=ESTADOS)
-    complemento = models.CharField('Complemento', max_length=2, choices=ESTADOS)
+    complemento = models.CharField('Complemento', max_length=2)
     numero = models.IntegerField('Numero')
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.logradouro + ' ' + self.cep
+
+
+class Barbearia(models.Model):
+    id = models.UUIDField('Id', primary_key=True, default=uuid.uuid4, editable=False)
+    cnpj = models.CharField(max_length=14)
+    data_cadastro = models.DateField('Data de nascimento', auto_now_add=True)
+    endereco = models.ForeignKey(Endereco, on_delete=models.CASCADE)
+    proprietario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.endereco
+
+
+#galeria da barbearia com fotos de clientes (os cortes) e fotos da infraestrutura
+class ImagemBarbearia(models.Model):
+    id = models.UUIDField('Id', primary_key=True, default=uuid.uuid4, editable=False)
+    nome_arquivo = models.CharField(max_length=255)
+    barbearia = models.ForeignKey(Barbearia, on_delete=models.CASCADE)
+    imagem = models.ImageField(upload_to='images/')
 
 
 # poder filtrar por barbearias que disponibilizam determinado serviço
@@ -76,40 +95,16 @@ class Servico(models.Model):
     nome = models.CharField('Nome', max_length=4, choices=TIPOS_SERVICOS)
     preco = models.DecimalField('Preço', max_digits=5, decimal_places=2)
     tempo_estimado = models.IntegerField('Tempo Estimado') # Em minutos
+    barbearia = models.ForeignKey(Barbearia, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nome
 
 
-#galeria da barbearia com fotos de clientes (os cortes) e fotos da infraestrutura
-class Barbearia(models.Model):
-    id = models.UUIDField('Id', primary_key=True, default=uuid.uuid4, editable=False)
-    data_cadastro = models.DateField('Data de nascimento', auto_now_add=True)
-    
-    # Forma normal para isolar endereços
-    endereco = models.ForeignKey(Endereco, on_delete=models.CASCADE)
-
-    # Dono da barbearia
-    proprietario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    
-    # serviços que podem ser ofertados pela barbearia
-    servicos = models.ManyToManyField(Servico, related_name='barbearias')
-
-    def __str__(self):
-        return self.endereco
-
-
-class ImagemBarbearia(models.Model):
-    id = models.UUIDField('Id', primary_key=True, default=uuid.uuid4, editable=False)
-    nome_arquivo = models.CharField(max_length=255)
-    barbearia = models.ForeignKey(Barbearia, on_delete=models.CASCADE)
-    imagem = models.ImageField(upload_to='images/')
-
-
 class Agendamento(models.Model):
     id = models.UUIDField('Id', primary_key=True, default=uuid.uuid4, editable=False)
-    data_cadastro = models.DateField('Cadastrado em', auto_now_add=True) 
-    data_reserva = models.DateField('Data reservada') 
+    data_cadastro = models.DateField('Reservado em', auto_now_add=True) 
+    data_reserva = models.DateField('Reservado para') 
     servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
     cliente = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     barbearia = models.ForeignKey(Barbearia, on_delete=models.CASCADE)
