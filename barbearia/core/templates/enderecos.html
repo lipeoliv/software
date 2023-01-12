@@ -7,15 +7,16 @@
 <main class="container">
   <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{% url 'user_index' %}">Início</a></li>
-      <li class="breadcrumb-item" aria-current="page"><span class="badge bg-warning rounded-pill">Endereços</span></li>
+      <li class="breadcrumb-item"><a href="">Início</a></li>
+      <li class="breadcrumb-item" aria-current="page"><span class="badge rounded-pill">Endereços</span></li>
     </ol>
   </nav>
   <div class="row">
     <div class="col-md-8 col-lg-8 mb-3">
       <h4 class="mb-3">ADICIONAR ENDEREÇO</h4>
       <div class="card p-3">
-        <form class="needs-validation" action="{% url 'user_addresses' %}" method="POST" enctype="multipart/form-data" >
+        <!--action="{ url 'user_addresses' }"-->
+        <form class="needs-validation" method="POST" enctype="multipart/form-data" >
           {% csrf_token %}
           {% for hidden in form.hidden_fields %}
             {{ hidden }}
@@ -89,7 +90,7 @@
             {% render_field form.is_main class+="form-check-input" %}
             <label class="form-check-label" for="default-address">Esse é o meu endereço principal</label>
           </div>
-          <button class="w-100 btn btn-warning btn-lg mb-3" type="submit">Salvar endereço <span data-feather="arrow-right"></span></button>
+          <button class="w-100 btn btn-secondary btn-lg mb-3" type="submit">Salvar endereço <span data-feather="arrow-right"></span></button>
         </form>
       </div>
       
@@ -108,7 +109,11 @@
         </div>
       </div>
       {% empty %}
-        <li>Nenhum endereço cadastrado</li>
+      <div class="card">
+        <div class="card-body">
+          Nenhum endereço cadastrado
+        </div>
+      </div>
       {% endfor %}
     </div>
   </div>

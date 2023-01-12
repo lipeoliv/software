@@ -24,24 +24,15 @@ p b {
 	min-height: calc(100vh - 200px);
 }
 
-#footer {
-	height: 100px;
-}
-
-#footer .link-light {
-	color: #6c757d;
-}
-
-/** Nav */
-
+/** Navigation */
 nav ol li a {
-	color: #ffc107;
+	color: #0a58ca;
 }
 
 .badge {
+	background-color: #0a58ca;
 	font-size: 14px;
 }
-
 
 .feather {
 	width: 20px;
@@ -61,15 +52,14 @@ button {
   color: #fff !important;
 }
 
-.card {
-	border-color: transparent;
+.btn-warning {
+	color: #fff;
+    background-color: #f06d39;
+    border-color: #f06d39;
 }
 
 
-/*
-   * Sidebar
-   */
-
+/** Sidebar */
 .sidebar {
 	position: fixed;
 	top: 0;
@@ -114,7 +104,7 @@ button {
 }
 
 .sidebar .nav-link.active {
-	color: #ffc107;
+	color: #0a58ca;
 }
 
 .sidebar .nav-link:hover .feather,
@@ -129,7 +119,7 @@ button {
 
 
 /*
-   * Navbar
+   * 
    
   
   .navbar-brand {
@@ -144,6 +134,13 @@ button {
     top: .25rem;
     right: 1rem;
   }*/
+
+
+/** Navbar */
+.nav-header {
+	background-color: #0a58ca;
+}
+
 
 .bi {
 	vertical-align: -.125em;
@@ -161,7 +158,6 @@ button {
 }
 
 /** Formulários */
-
 .form-control-dark {
 	color: #fff;
 	background-color: rgba(255, 255, 255, .1);
@@ -183,7 +179,7 @@ button {
 
 .form-control:focus {
 	color: #212529;
-	border-color: #ffc107;
+	border-color: #f06d39;
 	background-color: transparent;
 	outline: 0;
 	box-shadow: none;
@@ -199,24 +195,23 @@ button {
 
 .form-select:focus {
 	color: #212529;
-	border-color: #ffc107;
+	border-color: #f06d39;
 	background-color: transparent;
 	outline: 0;
 	box-shadow: none;
 }
 
 .form-check-input:checked {
-  background-color: #ffc107;
-  border-color: #ffc107;
+  background-color: #f06d39;
+  border-color: #f06d39;
 }
 
 
-/** 
-  Inicio
-  */
 
+
+/** Inicio */
 .money {
-	color: #ffc107;
+	color: #0a58ca;
 }
 
 .hori-timeline .events {
@@ -274,10 +269,14 @@ button {
 }
 
 .bg-soft-warning {
-	background-color: #ffc107!important;
+	background-color: #0a58ca!important;
 }
 
 /** Cards */
+.card {
+	border-color: transparent;
+}
+
 .custom-link {
 	font-size: 1rem;
 	text-decoration: none;
@@ -295,10 +294,20 @@ button {
 
 /** Products */
 .page-link {
-	color: #ffc107;
+	color: #0a58ca;
 }
 
 .input-images {
 	cursor: pointer;
+}
+
+
+/** Footer */
+#footer {
+	height: 100px;
+}
+
+#footer .link-light {
+	color: #6c757d;
 }
 

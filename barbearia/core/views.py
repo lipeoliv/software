@@ -6,10 +6,10 @@ def index(request):
     return render(request, 'user.html')
 
 def dados_usuario(request):
-    return render(request, 'personal.html')
+    return render(request, 'dados_pessoais.html')
 
 def agendamentos(request):
-    return render(request, 'orders.html')
+    return render(request, 'agendamentos.html')
 
 
 # Endereco views
@@ -32,7 +32,7 @@ def create_endereco(request):
         "form": form
     }
 
-    return render(request, 'endereco.html', context)
+    return render(request, 'enderecos.html', context)
 
 
 def update_endereco(request, id):  
@@ -48,13 +48,13 @@ def update_endereco(request, id):
         "enderecos": Endereco.objects.all(),
         "form": form
     }
-    return render(request, 'Endereco_edit.html', context)  
+    return render(request, 'endereco_edit.html', context)  
 
 
 def destroy_endereco(request, id):  
     endereco = Endereco.objects.get(id=id)  
     endereco.delete()  
-    return redirect("user_Enderecoes")  
+    return redirect("user_enderecos")  
 
 
 # Credit card views
