@@ -19,20 +19,21 @@
             <img class="bi me-2" width="40" height="32" src="{% static 'img/relogio.svg' %}" alt="">
           </a>
           <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="{% url 'user_index' %}" class="nav-link px-2 link-light">Início</a></li>
-            <li><a href="{% url 'user_orders' %}" class="nav-link px-2 link-light">Compras</a></li>
-            <li><a href="{% url 'user_data' %}" class="nav-link px-2 link-light">Dados Pessoais</a></li>
-            <li><a href="{% url 'user_addresses' %}" class="nav-link px-2 link-light">Endereços</a></li>
-            <li><a href="{% url 'user_cards' %}" class="nav-link px-2 link-light">Cartões</a></li>
-            <li><a href="{% url 'user_products' %}" class="nav-link px-2 link-light">Meus Produtos</a></li>
+            <li><a href="{% url 'index' %}" class="nav-link px-2 link-light">Início</a></li>
+            <li><a href="{% url 'agendamentos' %}" class="nav-link px-2 link-light">Agendamentos</a></li>
+            <li><a href="{% url 'dados_usuario' %}" class="nav-link px-2 link-light">Dados Pessoais</a></li>
+            <li><a href="{% url 'enderecos_usuario' %}" class="nav-link px-2 link-light">Endereços</a></li>
+            <li><a href="{% url 'cartoes_usuario' %}" class="nav-link px-2 link-light">Cartões</a></li>
+            <!--Se o cara for barbeiro libera essa opcao-->
+            <li><a href="{% url 'servicos' %}" class="nav-link px-2 link-light">Meus Produtos</a></li>
           </ul>
           <div class="dropdown text-end">
             <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="https://avatars.githubusercontent.com/u/36075268?s=400&u=23240aa935fc2b665acbd00b4f3952ed1c68ad43&v=4" alt="mdo" width="32" height="32" class="rounded-circle">
             </a>
             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
-              <li><a class="dropdown-item" href="{% url 'user_data' %}">Configurações</a></li>
-              <li><a class="dropdown-item" href="{% url 'user_index' %}">Meu perfil</a></li>
+              <li><a class="dropdown-item" href="{% url 'dados_usuario' %}">Configurações</a></li>
+              <li><a class="dropdown-item" href="{% url 'index' %}">Meu perfil</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
@@ -60,12 +61,13 @@
           </a>
       
           <ul class="nav col-md-4 justify-content-end">
-            <li><a href="{% url 'user_index' %}" class="nav-link px-2 link-light">Início</a></li>
-            <li><a href="{% url 'user_orders' %}" class="nav-link px-2 link-light">Compras</a></li>
-            <li><a href="{% url 'user_data' %}" class="nav-link px-2 link-light">Dados Pessoais</a></li>
-            <li><a href="{% url 'user_addresses' %}" class="nav-link px-2 link-light">Endereços</a></li>
-            <li><a href="{% url 'user_cards' %}" class="nav-link px-2 link-light">Cartões</a></li>
-            <li><a href="{% url 'user_products' %}" class="nav-link px-2 link-light">Meus Produtos</a></li>
+            <li><a href="{% url 'index' %}" class="nav-link px-2 link-light">Início</a></li>
+            <li><a href="{% url 'agendamentos' %}" class="nav-link px-2 link-light">Agendamentos</a></li>
+            <li><a href="{% url 'dados_usuario' %}" class="nav-link px-2 link-light">Dados Pessoais</a></li>
+            <li><a href="{% url 'enderecos_usuario' %}" class="nav-link px-2 link-light">Endereços</a></li>
+            <li><a href="{% url 'cartoes_usuario' %}" class="nav-link px-2 link-light">Cartões</a></li>
+            <!--Se o cara for barbeiro libera essa opcao-->
+            <li><a href="{% url 'servicos' %}" class="nav-link px-2 link-light">Meus Serviços</a></li>
           </ul>
         </footer>
       </div>

@@ -46,5 +46,7 @@ class Usuario(AbstractUser):
             ('Usuario', 'Permissao de usuario comum'),
         ]
 
+    def __str__(self):
+        return '{} ({})'.format(self.nome, self.cpf)
 
 

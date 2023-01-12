@@ -52,6 +52,7 @@ TIPOS_SERVICOS = (
     ('PD', 'Pedicure'),
 )
 
+
 class Endereco(models.Model):
     id = models.UUIDField('Id', primary_key=True, default=uuid.uuid4, editable=False)
     cep = models.IntegerField('CEP')
@@ -66,6 +67,7 @@ class Endereco(models.Model):
     def __str__(self):
         return self.logradouro + ' ' + self.cep
 
+
 # poder filtrar por barbearias que disponibilizam determinado serviço
 # o barbeiro poderá cadastrar quais serviços ele disponibiliza em seu estabelecimento
 # ele escolherá o serviço e dirá quanto que ele cobrará na sua barbearia
@@ -74,6 +76,9 @@ class Servico(models.Model):
     nome = models.CharField('Nome', max_length=4, choices=TIPOS_SERVICOS)
     preco = models.DecimalField('Preço', max_digits=5, decimal_places=2)
     tempo_estimado = models.IntegerField('Tempo Estimado') # Em minutos
+
+    def __str__(self):
+        return self.nome
 
 
 #galeria da barbearia com fotos de clientes (os cortes) e fotos da infraestrutura
@@ -109,6 +114,9 @@ class Agendamento(models.Model):
     cliente = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     barbearia = models.ForeignKey(Barbearia, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return '{} {} @ {}'.format(self.cliente, self.servico, self.barbearia)
+
 
 # Cartões e afins
 class CartaoCredito(models.Model):
@@ -117,3 +125,7 @@ class CartaoCredito(models.Model):
     numero = models.IntegerField('Número do cartão')
     validade = models.CharField('Válidade', max_length=20)
     cvv = models.IntegerField('Código de verificação')
+    # adicionar bandeira
+
+    def __str__(self):
+        return self.numero[-4:] # ultimos 4 dígitos

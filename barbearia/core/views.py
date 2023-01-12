@@ -1,75 +1,67 @@
 from django.shortcuts import render, redirect
-'''
+from .forms import EnderecoUsuarioForm, CartaoCreditoForm, ServicoForm
+from .models import Endereco, CartaoCredito, Servico#, ServicoImage      
 
-from .forms import AddressForm, CreditCardForm, ProductForm
-from .models import Address, CreditCard, Product, ProductImage      
+def index(request):
+    return render(request, 'user.html')
 
-def user_data(request):
+def dados_usuario(request):
     return render(request, 'personal.html')
 
-def orders(request):
+def agendamentos(request):
     return render(request, 'orders.html')
 
-def products(request):
-    return render(request, 'my_products.html')
 
-def addresses(request):
-    return render(request, 'address.html')
-
-def add_product(request):
-    return render(request, 'add_product.html')
-
-
-# Address views
-def create_address(request):
-    print("acessando addresses")
+# Endereco views
+def create_endereco(request):
+    print("acessando Enderecoes")
     if request.method == "POST":
-        form = AddressForm(request.POST)
+        form = EnderecoUsuarioForm(request.POST)
         if form.is_valid():
             try:
                 form.save()
-                return redirect('user_addresses')
+                return redirect('user_enderecoes')
             except:
                 pass
     else:
-        addresses = Address.objects.all() 
-        form = AddressForm()
+        enderecos = Endereco.objects.all() 
+        form = EnderecoUsuarioForm()
      
     context = {
-        "addresses": addresses,
+        "enderecos": enderecos,
         "form": form
     }
 
-    return render(request, 'address.html', context)
+    return render(request, 'endereco.html', context)
 
 
-def update_address(request, id):  
-    address = Address.objects.get(id=id)  
-    form = AddressForm(request.POST, instance=address)  
+def update_endereco(request, id):  
+    endereco = Endereco.objects.get(id=id)  
+    form = EnderecoUsuarioForm(request.POST, instance=endereco)  
     
     if form.is_valid():  
         form.save()  
-        return redirect("user_addresses")  
+        return redirect("user_Enderecoes")  
     
     context = {
-        "address": address,
-        "addresses": Address.objects.all(),
+        "endereco": Endereco,
+        "enderecos": Endereco.objects.all(),
         "form": form
     }
-    return render(request, 'address_edit.html', context)  
+    return render(request, 'Endereco_edit.html', context)  
 
 
-def destroy_address(request, id):  
-    address = Address.objects.get(id=id)  
-    address.delete()  
-    return redirect("user_addresses")  
+def destroy_endereco(request, id):  
+    endereco = Endereco.objects.get(id=id)  
+    endereco.delete()  
+    return redirect("user_Enderecoes")  
 
 
 # Credit card views
-def create_credit_card(request):
+def create_cartao(request):
     if request.method == "POST":
         
-        form = CreditCardForm(request.POST)
+        form = CartaoCreditoForm(request.POST)
         if form.is_valid():
             try:
                 form.save()
@@ -77,94 +69,101 @@ def create_credit_card(request):
             except:
                 pass
     else:
-        cards = CreditCard.objects.all() 
-        form = CreditCardForm()
+        cartoes = CartaoCredito.objects.all() 
+        form = CartaoCreditoForm()
      
     context = {
-        "cards": cards,
+        "cartoes": cartoes,
         "form": form
     }
 
     return render(request, 'cards.html', context)
 
 
-def update_card(request, id):  
-    card = CreditCard.objects.get(id=id)  
-    form = CreditCardForm(request.POST, instance=card)  
+def update_cartao(request, id):  
+    cartao = CartaoCredito.objects.get(id=id)  
+    form = CartaoCreditoForm(request.POST, instance=cartao)  
     
     if form.is_valid():  
         form.save()  
         return redirect("user_cards")  
     
     context = {
-        "card": card,
-        "cards": CreditCard.objects.all(),
+        "cartao": cartao,
+        "cartoes": CartaoCredito.objects.all(),
         "form": form
     }
     return render(request, 'card_edit.html', context)  
 
 
-def destroy_card(request, id):  
-    card = CreditCard.objects.get(id=id)  
-    card.delete()  
+def destroy_cartao(request, id):  
+    cartao = CartaoCredito.objects.get(id=id)  
+    cartao.delete()  
     return redirect("user_cards")  
 
 
-# Product views
-def show_products(request):
-    products = Product.objects.all()
+# Servico views
+def servicos(request):
+    return render(request, 'meus_servicos.html')
+
+
+def show_servicos(request):
+    servicos = Servico.objects.all()
     context = {
-        "products": products
+        "servicos": servicos
     }
-    return render(request, 'products_show.html', context)
+    return render(request, 'servicos_show.html', context)
 
 
-def create_product(request):
+def add_servico(request):
+    return render(request, 'add_servico.html')
+
+
+def create_servico(request):
     if request.method == "POST":
-        form = ProductForm(request.POST)
+        form = ServicoForm(request.POST)
         images = request.FILES.getlist('images')
         if form.is_valid():
             try:
-                new_product= form.save()
-                for image in images:
-                    ProductImage.objects.create(name=image.name, product=new_product, image=image)
+                new_Servico = form.save()
+                #for image in images:
+                    #ServicoImage.objects.create(name=image.name, Servico=new_Servico, image=image)
 
-                return redirect('user_products')
+                return redirect('user_servicos')
             except:
                 pass
     else:
-        form = ProductForm()
+        form = ServicoForm()
      
     context = {
         "form": form
     }
 
-    return render(request, 'product_add.html', context)
+    return render(request, 'servico_add.html', context)
 
 
-def update_product(request, id):  
-    product = Product.objects.get(id=id)  
-    form = ProductForm(request.POST, instance=product)
-    images = ProductImage.objects.filter(product=product)
-    new_images = request.FILES.getlist('images') or []
+def update_servico(request, id):  
+    servico = Servico.objects.get(id=id)  
+    form = ServicoForm(request.POST, instance=Servico)
+    #images = ServicoImage.objects.filter(Servico=Servico)
+    #new_images = request.FILES.getlist('images') or []
 
     if form.is_valid():  
         form.save()
-        for image in new_images:
-            ProductImage.objects.create(name=image.name, product=product, image=image)
+        #for image in new_images:
+            #ServicoImage.objects.create(name=image.name, Servico=Servico, image=image)
 
-        return redirect("user_products")  
+        return redirect("user_Servicos")  
     
     context = {
-        "product": product,
+        "servico": servico,
         "form": form,
-        "images": images
+        #"images": images
     }
-    return render(request, 'product_edit.html', context)  
+    return render(request, 'Servico_edit.html', context)  
 
 
-def destroy_product(request, id):  
-    product = Product.objects.get(id=id)  
-    product.delete()  
-    return redirect("user_products") 
-'''
+def destroy_servico(request, id):  
+    servico = Servico.objects.get(id=id)  
+    servico.delete()  
+    return redirect("user_Servicos") 
