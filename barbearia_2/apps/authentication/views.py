@@ -45,7 +45,7 @@ def register_user(request):
 
             msg = 'User created - please <a href="/login">login</a>.'
             success = True
-
+            #ja autentica o usuario e redireciona para o login
             # return redirect("/login/")
 
         else:
