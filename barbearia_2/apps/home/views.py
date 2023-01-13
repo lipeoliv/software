@@ -37,7 +37,7 @@ def pages(request):
     except:
         html_template = loader.get_template('home/page-500.html')
         return HttpResponse(html_template.render(context, request))
-
+'''
 
 from django.shortcuts import render, redirect
 from .forms import EnderecoUsuarioForm, CartaoCreditoForm, ServicoForm
@@ -208,3 +208,4 @@ def destroy_servico(request, id):
     servico = Service.objects.get(id=id)  
     servico.delete()  
     return redirect("user_Servicos") 
+    '''

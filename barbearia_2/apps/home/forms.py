@@ -172,9 +172,8 @@ class AppointmentForm(ModelForm):
     class Meta:  
         model = Appointment  
         fields = [
-            'servico',
-            'cliente',
-            'barbearia',
+            'appointed_for',
+            'service',
         ] 
 
 
@@ -182,8 +181,8 @@ class CreditCardForm(ModelForm):
     class Meta:  
         model = CreditCard  
         fields = [
-            'portador',
-            'numero',
-            'validade',
+            'owner',
+            'number',
+            'valid_until',
             'cvv'
         ] 
