@@ -26,7 +26,7 @@ class LoginForm(forms.Form):
 
 
 class SignUpForm(UserCreationForm):
-    username = forms.CharField(
+    cpf = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "placeholder": "CPF",
@@ -64,6 +64,7 @@ class SignUpForm(UserCreationForm):
     birth = forms.DateField(
         widget=forms.DateInput(
             attrs={
+                "type": "date",
                 "placeholder": "Data de nascimento",
                 "class": "form-control"
             }
@@ -71,4 +72,4 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2', 'name', 'birth')
+        fields = ('cpf', 'email', 'password1', 'password2', 'name', 'birth')
