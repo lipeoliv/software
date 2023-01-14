@@ -59,10 +59,14 @@ def become_barber_2(request):
 
     if request.method == 'POST':
         form = BarbershopForm(request.POST or None)
+        images = request.FILES.getlist('images')
         if form.is_valid():
             barbershop = form.save(commit=False)
             barbershop.owner = request.user
             barbershop.save()
+            for image in images:
+                    BarbershopImage.objects.create(filename=image.name, barbershop=barbershop, image=image)
+
             return redirect('become_barber_2')
     else:
         form = BarbershopForm()
@@ -70,6 +74,7 @@ def become_barber_2(request):
      
     context = {
         'segment': 'become_barber',
+        'form': form,
         'msg': msg,
     }
 
