@@ -2,7 +2,7 @@ import uuid
 from django.db import models
 from apps.authentication.models import User
 
-ESTADOS = (
+STATES = (
     ('AC', 'Acre'),
     ('AL', 'Alagoas'),
     ('AP', 'Amapá'),
@@ -32,7 +32,7 @@ ESTADOS = (
     ('TO', 'Tocantins'),
 )
 
-TIPOS_SERVICOS = (
+SERVICE_NAMES = (
     ('CS', 'Corte Social'),
     ('CU', 'Corte Undercut'),
     ('CN', 'Corte Navalhado'),
@@ -60,10 +60,9 @@ class Address(models.Model):
     public_place = models.CharField('Logradouro', max_length=50)
     neighborhood = models.CharField('Bairro', max_length=100)
     city = models.CharField('Cidade', max_length=50)
-    state = models.CharField('Estado', max_length=2, choices=ESTADOS)
+    state = models.CharField('Estado', max_length=2, choices=STATES)
     complement = models.CharField('Complemento', max_length=2)
     number = models.IntegerField('Numero')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.public_place + ' ' + self.zip
@@ -71,11 +70,17 @@ class Address(models.Model):
 
 class Barbershop(models.Model):
     id = models.UUIDField('Id', primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField('Nome', max_length=255)
     cnpj = models.CharField(max_length=14)
     register_date = models.DateField('Data de nascimento', auto_now_add=True)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-
+    opening_hour = models.TimeField('Abertura')
+    closing_hour = models.TimeField('Fechamento')
+    
+    # estado da barbearia
+    completed = models.BooleanField('Cadastro completo', default=False)
+    
     def __str__(self):
         return self.address
 
@@ -93,7 +98,7 @@ class BarbershopImage(models.Model):
 # ele escolherá o serviço e dirá quanto que ele cobrará na sua barbearia
 class Service(models.Model):
     id = models.UUIDField('Id', primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField('Nome', max_length=4, choices=TIPOS_SERVICOS)
+    name = models.CharField('Nome', max_length=4, choices=SERVICE_NAMES)
     price = models.DecimalField('Preço', max_digits=5, decimal_places=2)
     estimated_time = models.IntegerField('Tempo Estimado') # Em minutos
     barbeshop = models.ForeignKey(Barbershop, on_delete=models.CASCADE)

@@ -3,7 +3,7 @@
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute right-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href="/client_index.html">
         <img src="/static/assets/img/barbershop.png" class="navbar-brand-img h-100 w-15" alt="...">
-        <span class="ms-1 font-weight-bold">BarberPro</span>
+        <span class="ms-1 font-weight-bold">BarberPro</span><br>
       </a>
     </div>
     <hr class="horizontal dark mt-0">
@@ -135,7 +135,7 @@
         </li>
         
         <li class="nav-item mt-3">
-          <h6 class="ps-4 text-uppercase text-xs font-weight-bolder opacity-6">Minha Barbearia</h6>
+          <h6 class="ps-4 text-uppercase text-xs font-weight-bolder opacity-6">Minha Barbearias</h6>
         </li>
         <li class="nav-item mb-1">
           <a class="nav-link  " href="">
@@ -252,8 +252,8 @@
           </div-->
           <p class="text-white">Você é barbeiro?</p>
           <br />
-          <a href="https://www.creative-tim.com/product/soft-ui-dashboard-pro-django" target="_blank" 
-             class="btn btn-white btn-sm w-100 mb-0">Faça o cadastro</a>
+          <a href="{% url 'become_barber' %}" target="" 
+             class="btn btn-white btn-sm w-100 mb-0">Faça seu cadastro</a>
         </div>
       </div>
     </div>

@@ -10,61 +10,55 @@
 {% block content %}
 
     <div class="container-fluid py-4">
-      <!--https://www.joyk.com/dig/detail/63008-->
       <div class="row">
         <div class="col-lg-7 mb-lg-0 mb-4">
-          <div class="card">
-            <div class="card-body p-3">
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="d-flex flex-column h-100">
-                    <p class="text-lg mb-1 pt-2 text-bold">BarberPro</p>
-                    <h4 class="font-weight-bolder">Agendamentos</h4>
-                    <p class="mb-5">From colors,cards, typography to complex elements, you will find the full documentation.</p>
-                    <a class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto" href="javascript:;">
-                      Read More
-                      <i class="fas fa-arrow-right text-sm ms-1" aria-hidden="true"></i>
-                    </a>
-                  </div>
-                </div>
-                <div class="col-lg-5 ms-auto text-center mt-5 mt-lg-0">
-                  <div class="bg-gradient-primary border-radius-lg h-100">
-                    <img src="/static/assets/img/shapes/waves-white.svg" class="position-absolute h-100 w-50 top-0 d-lg-block d-none" alt="waves">
-                    <div class="position-relative d-flex align-items-center justify-content-center h-100">
-                      <img class="w-100 position-relative z-index-2 pt-4" src="/static/assets/img/illustrations/rocket-white.png">
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div class="card card-plain">
+            <div class="card-header pb-0 text-left bg-transparent">
+              <h4 class="text-info text-gradient">
+                Nova barbearia
+              </h4>
+              <p class="mb-0">
+                Nos conte mais sobre seu negócio
+              </p>
             </div>
-          </div>
-        </div>
-        <div class="col-lg-5">
-          <div class="card h-100">
-            <div class="overflow-hidden position-relative border-radius-xl bg-cover h-100" style="background-image: url('/static/assets/img/ivancik.jpg');">
-              <span class="mask bg-gradient-dark"></span>
-              <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
-                <h5 class="text-white font-weight-bolder mb-4 pt-2">Work with the rockets</h5>
-                <p class="text-white">Wealth creation is an evolutionarily recent positive-sum game. It is all about who take the opportunity first.</p>
-                <a class="text-white text-sm font-weight-bold mb-0 icon-move-right mt-auto" href="javascript:;">
-                  Read More
-                  <i class="fas fa-arrow-right text-sm ms-1" aria-hidden="true"></i>
-                </a>
-              </div>
+            <div class="card-body">
+              <form role="form text-left" method="post" action="">
+                
+                {% csrf_token %}
+
+                <label>Nome</label>
+                <div class="mb-3">
+                  {{ form.name }}
+                </div>
+
+                <label>CNPJ</label>
+                <div class="mb-3">
+                  {{ form.cnpj }}
+                </div>
+
+                <label>Hora de abertura (0 - 24h)</label>
+                <div class="mb-3">
+                  {{ form.opening_hour }}
+                </div>
+
+                <label>Hora de fechamento (0 - 24h)</label>
+                <div class="mb-3">
+                  {{ form.closing_hour }}
+                </div>
+
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="rememberMe" checked="">
+                  <label class="form-check-label" for="rememberMe">Lembre-me</label>
+                </div>
+                <div class="text-center">
+                  <button type="submit" name="login" class="btn bg-gradient-info w-100 mt-4 mb-0">Prosseguir</button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="row mt-4">
-        <div class="col-lg-12 mb-lg-0 mb-4">
-          <div class="card">
-            <div class="card-body p-3">
-            </div>
-          </div>
-        </div>
-      </div>
-      
       {% include "includes/footer.html" %}
 
     </div>

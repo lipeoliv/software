@@ -1,8 +1,8 @@
 from django.forms import ModelForm
-from django.forms import CharField, TextInput, IntegerField, NumberInput, DateField, DateInput, ModelChoiceField, Select
+from django.forms import CharField, TextInput, IntegerField, NumberInput, DateField, DateInput, ModelChoiceField, Select, TimeField, TimeInput, ChoiceField
 
 from .models import Address, Service, CreditCard, Barbershop, BarbershopImage, Appointment
-
+from .models import STATES
 
 class AddressForm(ModelForm):
     zip = CharField(
@@ -37,10 +37,10 @@ class AddressForm(ModelForm):
             }
         )
     )
-    state = CharField(
-        widget=TextInput(
+    state = ChoiceField(
+        choices=STATES,
+        widget=Select(
             attrs={
-                "placeholder": "Estado",
                 "class": "form-control"
             }
         )
@@ -111,21 +111,49 @@ class ServiceForm(ModelForm):
 
 
 class BarbershopForm(ModelForm):
+    name = CharField(
+        widget=TextInput(
+            attrs={
+                "placeholder": "Nome do estabelecimento",
+                "class": "form-control"
+            }
+        )
+    ) 
     cnpj = CharField(
         widget=TextInput(
             attrs={
-                "placeholder": "CNPJ",
+                "placeholder": "Apenas números",
                 "class": "form-control"
             }
         )
     )  
+    opening_hour = TimeField(
+        widget=TimeInput(
+            attrs={
+                "placeholder": "Hora de abertura",
+                "class": "form-control",
+                "type": "time"
+            }
+        )
+    )
+    closing_hour = TimeField(
+        widget=TimeInput(
+            attrs={
+                "placeholder": "Hora de fechamento",
+                "class": "form-control",
+                "type": "time"
+            }
+        )
+    )
     # O endereço será um form de endereço no template
     # as fotos será um form no template
     # o proprietário será o id do próprio usuário
     class Meta:  
         model = Barbershop  
         fields = [
-            'cnpj'
+            'cnpj',
+            'opening_hour',
+            'closing_hour'
         ]  
 
 
