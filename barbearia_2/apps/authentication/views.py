@@ -1,8 +1,3 @@
-# -*- encoding: utf-8 -*-
-"""
-Copyright (c) 2019 - present AppSeed.us
-"""
-
 # Create your views here.
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
@@ -43,13 +38,14 @@ def register_user(request):
             raw_password = form.cleaned_data.get("password1")
             user = authenticate(username=username, password=raw_password)
 
-            msg = 'User created - please <a href="/login">login</a>.'
+            msg = 'Usuário criado - acesse <a href="/login">login</a>.'
             success = True
             #ja autentica o usuario e redireciona para o login
+            # só copiar o algoritmo de login
             # return redirect("/login/")
 
         else:
-            msg = 'Form is not valid'
+            msg = 'Informações inválidas'
     else:
         form = SignUpForm()
 

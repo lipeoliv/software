@@ -833,10 +833,10 @@ $input-border-radius-sm:                $border-radius-md !default;
 $input-border-radius-lg:                $border-radius-md !default;
 
 $input-focus-bg:                        $white !default;
-$input-focus-border-color:              #e293d3 !default;
+$input-focus-border-color:              $warning !default;
 $input-focus-color:                     $input-color !default;
 $input-focus-width:                     2px !default;
-$input-focus-box-shadow:                0 0 0 $input-focus-width #e9aede !default;
+$input-focus-box-shadow:                0 0 0 $input-focus-width #f35d58 !default;
 
 $input-placeholder-color:               $gray-500 !default;
 $input-plaintext-color:                 $dark !default;

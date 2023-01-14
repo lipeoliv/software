@@ -1,0 +1,117 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %} Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+<link
+    href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+    rel="stylesheet"
+/>
+<style>
+  .filepond--item {
+    width: calc(50% - 0.5em);
+  }
+
+  .filepond--panel--backgaround {
+    /*background-image:url('/static/assets/img/curved-images/barber-bg.jpg');*/
+  }
+
+  .filepond--panel-root {
+    border: 1px solid #d2d6da;
+    background-color: #fff;
+  }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="container-fluid py-4">
+      <div class="card card-plain">
+        <div class="card-header pb-0 text-left bg-transparent">
+          <h4 class="text-info text-gradient">
+            Nova barbearia
+          </h4>
+          <p class="mb-0">
+            Nos conte mais sobre seu negócio
+          </p>
+        </div>
+        <div class="card-body">
+          <form role="form text-left" method="post" action="">
+            {% csrf_token %}
+            <div class="row">
+
+              <div class="col-lg-6 d-flex flex-column mx-auto">
+                <label>Nome</label>
+                <div class="mb-3">
+                  {{ form.name }}
+                </div>
+
+                <label>CNPJ</label>
+                <div class="mb-3">
+                  {{ form.cnpj }}
+                </div>
+
+                <label>Hora de abertura (0 - 24h)</label>
+                <div class="mb-3">
+                  {{ form.opening_hour }}
+                </div>
+
+                <label>Hora de fechamento (0 - 24h)</label>
+                <div class="mb-3">
+                  {{ form.closing_hour }}
+                </div>
+              </div>
+
+              <div class="col-lg-6 d-flex flex-column mx-auto">
+                <label>Upload de imagens</label>
+                <div class="mb-3">
+                  <input type="file" class="filepond" multiple>
+                </div>
+              </div>
+
+              <div class="col-lg-6 d-flex flex-column">
+                <div class="text-center">
+
+                  <!--Colcar para de baixo do upload de imagem na mesma col-->
+                  <button type="submit" name="login" class="btn bg-gradient-info w-100 mt-4 mb-0">Prosseguir</button>
+                </div>
+              </div>
+            </div>
+
+            
+          </form>
+        </div>
+      </div>
+
+      {% include "includes/footer.html" %}
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+  <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+  <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+  <script src="{% static 'assets/js/pond_pt_br.js' %}"></script>
+  <script>
+    FilePond.registerPlugin(FilePondPluginImagePreview);
+    FilePond.parse(document.body);
+    const pt_br = window["pt-br"];
+    FilePond.setOptions(config);
+  </script>
+  
+  <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
+
+{% endblock javascripts %}
