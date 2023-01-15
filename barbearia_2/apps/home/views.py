@@ -23,38 +23,9 @@ def appointments(request):
     return render(request, 'home/index.html', context)
 
 
-# Cadastro de barbearia
-@login_required(login_url='/login/')
-def become_barber(request):
-    msg = None
-
-    # last_barbershop = Barbershop.objects.filter(completed=False)[0]
-    # Se já comecou o cadastro de um barbearia, redireciona para a continuação
-    # É preciso terminar o cadastro de um barbearia por completo
-    # if last_barbershop: 
-        # return redirect('become_barber_2')
-
-    if request.method == 'POST':
-        form = AddressForm(request.POST or None)
-        if form.is_valid():
-            form.save()
-            return redirect('become_barber_2')
-    else:
-        form = AddressForm()
-        msg = 'Começe nos dizendo onde ela está situada'
-     
-    context = {
-        'segment': 'become_barber',
-        'form': form,
-        'msg': msg,
-    }
-
-    return render(request, 'home/barber/become_barber.html', context)
-
-
 # Cadastro de enderecos e fotos da barbearia
 @login_required(login_url='/login/')
-def become_barber_2(request):
+def become_barber(request):
     msg = None
 
     if request.method == 'POST':
@@ -65,7 +36,7 @@ def become_barber_2(request):
             barbershop.owner = request.user
             barbershop.save()
             for image in images:
-                    BarbershopImage.objects.create(filename=image.name, barbershop=barbershop, image=image)
+                BarbershopImage.objects.create(filename=image.name, barbershop=barbershop, image=image)
 
             return redirect('become_barber_2')
     else:
@@ -76,6 +47,50 @@ def become_barber_2(request):
         'segment': 'become_barber',
         'form': form,
         'msg': msg,
+    }
+
+    return render(request, 'home/barber/become_barber.html', context)
+
+
+# Cadastro de barbearia
+@login_required(login_url='/login/')
+def become_barber_2(request):
+
+    # if last_barbershop.aindanaocadastrado: redirect(inicio do cadastro)
+
+    msg = None
+
+    last_unfinished_barbershop = Barbershop.objects.filter(completed=False).first()
+    
+    # Não iniciou o cadastro de uma barbearia
+    if last_unfinished_barbershop is None: 
+        return redirect('become_barber')
+
+    # Se já comecou o cadastro de um barbearia, redireciona para a continuação
+    # É preciso terminar o cadastro de um barbearia por completo
+    # if last_barbershop: 
+        # return redirect('become_barber_2')
+
+    if request.method == 'POST':
+        
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            print('form')
+            address = form.save(commit=False)
+            address.barbershop = last_unfinished_barbershop
+            address.save()
+            return redirect('home')
+        else: 
+            print(form.errors)
+    else:
+        print('nao post')
+        form = AddressForm()
+     
+    context = {
+        'segment': 'become_barber',
+        'form': form,
+        'msg': msg,
+        'last_barbershop': last_unfinished_barbershop,
     }
 
     return render(request, 'home/barber/become_barber_2.html', context)

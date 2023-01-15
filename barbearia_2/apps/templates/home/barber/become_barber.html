@@ -1,80 +1,87 @@
 {% extends 'layouts/base.html' %}
+{% load static %}
 
 {% block title %} Dashboard {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
-<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
+<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+<link
+    href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+    rel="stylesheet"
+/>
+<style>
+  .filepond--item {
+    width: calc(50% - 0.5em);
+  }
+
+  .filepond--panel--backgaround {
+    /*background-image:url('/static/assets/img/curved-images/barber-bg.jpg');*/
+  }
+
+  .filepond--panel-root {
+    border: 1px solid #d2d6da;
+    background-color: #fff;
+  }
+</style>
 {% endblock stylesheets %}
 
 {% block content %}
 
     <div class="container-fluid py-4">
-      <div class="row">
-        <div class="col-lg-6 mb-lg-0 mb-4">
-          <div class="card card-plain">
-            <div class="card-header pb-0 text-left bg-transparent">
-              <h4 class="text-info text-gradient">
-                Nova barbearia
-              </h4>
-              <p class="mb-0">
-                  {% if msg %}
-                      {{ msg | safe }}
-                  {% else %}
-                      Começe nos dizendo onde ela está situada
-                  {% endif %}                  
-              </p>
-            </div>
-            <div class="card-body">
-              <form role="form text-left" method="post" action="">
-                
-                {% csrf_token %}
+      <div class="card card-plain">
+        <div class="card-header pb-0 text-left bg-transparent">
+          <h4 class="text-info text-gradient">
+            Nova barbearia
+          </h4>
+          <p class="mb-0">
+            {% if msg %}
+                {{ msg | safe }}
+            {% else %}
+               Nos conte sobre seu negócio
+            {% endif %}
+          </p>
+        </div>
+        <div class="card-body">
+          <form role="form text-left" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
 
-                <label>CEP</label>
+              <div class="col-lg-6 d-flex flex-column mx-auto">
+                <label>Nome</label>
                 <div class="mb-3">
-                  {{ form.zip }}
-                </div>
-
-                <label>Logradouro</label>
-                <div class="mb-3">
-                  {{ form.public_place }}
+                  {{ form.name }}
                 </div>
 
-                <label>Bairro</label>
+                <label>CNPJ</label>
                 <div class="mb-3">
-                  {{ form.neighborhood }}
-                </div>
-                
-                <label>Estado</label>
-                <div class="mb-3">
-                  {{ form.state }}
-                </div>
-                
-                <label>Cidade</label>
-                <div class="mb-3">
-                  {{ form.city }}
+                  {{ form.cnpj }}
                 </div>
 
-                <label>Complemento</label>
+                <label>Hora de abertura (0 - 24h)</label>
                 <div class="mb-3">
-                  {{ form.complement }}
+                  {{ form.opening_hour }}
                 </div>
 
-                <label>Número</label>
+                <label>Hora de fechamento (0 - 24h)</label>
                 <div class="mb-3">
-                  {{ form.number }}
+                  {{ form.closing_hour }}
                 </div>
+              </div>
 
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" id="rememberMe" checked="">
-                  <label class="form-check-label" for="rememberMe">Lembre-me</label>
+              <div class="col-lg-6 d-flex flex-column mx-auto">
+                <label>Upload de imagens</label>
+                <div class="mb-3">
+                  <input type="file" class="filepond" multiple>
                 </div>
                 <div class="text-center">
-                  <button type="submit" name="login" class="btn bg-gradient-info w-100 mt-4 mb-0">Prosseguir</button>
+                  <button type="submit" name="login" class="btn bg-gradient-info w-100 mt-1 mb-0">Prosseguir</button>
                 </div>
-              </form>
+              </div>
             </div>
-          </div>
+
+            
+          </form>
         </div>
       </div>
 
@@ -86,163 +93,14 @@
 
 <!-- Specific JS goes HERE --> 
 {% block javascripts %}
-
-  <script src="/static/assets/js/plugins/chartjs.min.js"></script>
-  <script src="/static/assets/js/plugins/Chart.extension.js"></script>
+  <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+  <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+  <script src="{% static 'assets/js/pond_pt_br.js' %}"></script>
   <script>
-    var ctx = document.getElementById("chart-bars").getContext("2d");
-
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        datasets: [{
-          label: "Sales",
-          tension: 0.4,
-          borderWidth: 0,
-          pointRadius: 0,
-          backgroundColor: "#fff",
-          data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
-          maxBarThickness: 6
-        }, ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        legend: {
-          display: false,
-        },
-        tooltips: {
-          enabled: true,
-          mode: "index",
-          intersect: false,
-        },
-        scales: {
-          yAxes: [{
-            gridLines: {
-              display: false,
-            },
-            ticks: {
-              suggestedMin: 0,
-              suggestedMax: 500,
-              beginAtZero: true,
-              padding: 0,
-              fontSize: 14,
-              lineHeight: 3,
-              fontColor: "#fff",
-              fontStyle: 'normal',
-              fontFamily: "Open Sans",
-            },
-          }, ],
-          xAxes: [{
-            gridLines: {
-              display: false,
-            },
-            ticks: {
-              display: false,
-              padding: 20,
-            },
-          }, ],
-        },
-      },
-    });
-
-    var ctx2 = document.getElementById("chart-line").getContext("2d");
-
-    var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke1.addColorStop(1, 'rgba(203,12,159,0.2)');
-    gradientStroke1.addColorStop(0.2, 'rgba(72,72,176,0.0)');
-    gradientStroke1.addColorStop(0, 'rgba(203,12,159,0)'); //purple colors
-
-    var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke2.addColorStop(1, 'rgba(20,23,39,0.2)');
-    gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
-    gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
-
-
-    new Chart(ctx2, {
-      type: "line",
-      data: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        datasets: [{
-            label: "Mobile apps",
-            tension: 0.4,
-            borderWidth: 0,
-            pointRadius: 0,
-            borderColor: "#cb0c9f",
-            borderWidth: 3,
-            backgroundColor: gradientStroke1,
-            data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-            maxBarThickness: 6
-
-          },
-          {
-            label: "Websites",
-            tension: 0.4,
-            borderWidth: 0,
-            pointRadius: 0,
-            borderColor: "#3A416F",
-            borderWidth: 3,
-            backgroundColor: gradientStroke2,
-            data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
-            maxBarThickness: 6
-
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        legend: {
-          display: false,
-        },
-        tooltips: {
-          enabled: true,
-          mode: "index",
-          intersect: false,
-        },
-        scales: {
-          yAxes: [{
-            gridLines: {
-              borderDash: [2],
-              borderDashOffset: [2],
-              color: '#dee2e6',
-              zeroLineColor: '#dee2e6',
-              zeroLineWidth: 1,
-              zeroLineBorderDash: [2],
-              drawBorder: false,
-            },
-            ticks: {
-              suggestedMin: 0,
-              suggestedMax: 500,
-              beginAtZero: true,
-              padding: 10,
-              fontSize: 11,
-              fontColor: '#adb5bd',
-              lineHeight: 3,
-              fontStyle: 'normal',
-              fontFamily: "Open Sans",
-            },
-          }, ],
-          xAxes: [{
-            gridLines: {
-              zeroLineColor: 'rgba(0,0,0,0)',
-              display: false,
-            },
-            ticks: {
-              padding: 10,
-              fontSize: 11,
-              fontColor: '#adb5bd',
-              lineHeight: 3,
-              fontStyle: 'normal',
-              fontFamily: "Open Sans",
-            },
-          }, ],
-        },
-      },
-    });
+    FilePond.registerPlugin(FilePondPluginImagePreview);
+    FilePond.parse(document.body);
+    const pt_br = window["pt-br"];
+    FilePond.setOptions(config);
   </script>
   
   <script>

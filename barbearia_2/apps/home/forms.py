@@ -123,7 +123,8 @@ class BarbershopForm(ModelForm):
         widget=TextInput(
             attrs={
                 "placeholder": "Apenas números",
-                "class": "form-control"
+                "class": "form-control",
+                "maxlength": 14,
             }
         )
     )  
@@ -151,9 +152,10 @@ class BarbershopForm(ModelForm):
     class Meta:  
         model = Barbershop  
         fields = [
+            'name',
             'cnpj',
             'opening_hour',
-            'closing_hour'
+            'closing_hour',
         ]  
 
 
