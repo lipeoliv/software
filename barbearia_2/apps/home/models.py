@@ -69,6 +69,13 @@ class Barbershop(models.Model):
         return self.name
 
 
+#galeria da barbearia com fotos de clientes (os cortes) e fotos da infraestrutura
+class BarbershopImage(models.Model):
+    id = models.UUIDField('Id', primary_key=True, default=uuid.uuid4, editable=False)
+    barbershop = models.ForeignKey(Barbershop, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images/')
+
+
 class Address(models.Model):
     barbershop = models.OneToOneField(Barbershop, on_delete=models.CASCADE, primary_key=True)
     zip = models.IntegerField('CEP')
@@ -80,15 +87,7 @@ class Address(models.Model):
     number = models.IntegerField('Numero')
 
     def __str__(self):
-        return self.public_place + ' ' + self.zip
-
-
-#galeria da barbearia com fotos de clientes (os cortes) e fotos da infraestrutura
-class BarbershopImage(models.Model):
-    id = models.UUIDField('Id', primary_key=True, default=uuid.uuid4, editable=False)
-    filename = models.CharField(max_length=255)
-    barbershop = models.ForeignKey(Barbershop, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images/')
+        return self.public_place + ', ' + self.neighborhood + ', n°' + str(self.number) + ' - ' + str(self.zip)
 
 
 # poder filtrar por barbearias que disponibilizam determinado serviço

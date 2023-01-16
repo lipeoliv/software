@@ -1,6 +1,7 @@
 # Create your views here.
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import Permission
 from .forms import LoginForm, SignUpForm
 
 
@@ -19,7 +20,7 @@ def login_view(request):
                 login(request, user)
                 return redirect("/")
             else:
-                msg = 'Invalid credentials'
+                msg = 'Dados inválidos'
         else:
             msg = 'Error validating the form'
 
@@ -33,19 +34,20 @@ def register_user(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
+            # Antes de salvar o usuario no banco, adiciona a permissao de usuario comum
+            user = form.save(commit=False)
+            user.user_permissions.add(Permission.objects.get(codename='user_perm'))
+            user.save()
+
+            # Já autentica o usuário criado
             username = form.cleaned_data.get("username")
             raw_password = form.cleaned_data.get("password1")
             user = authenticate(username=username, password=raw_password)
-
-            msg = 'Usuário criado - acesse <a href="/login">login</a>.'
-            success = True
-            #ja autentica o usuario e redireciona para o login
-            # só copiar o algoritmo de login
-            # return redirect("/login/")
-
+            if user is not None:
+                login(request, user)
+                return redirect("/")
         else:
-            msg = 'Informações inválidas'
+            msg = 'Dados inválidos'
     else:
         form = SignUpForm()
 

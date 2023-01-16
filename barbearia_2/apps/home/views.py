@@ -1,6 +1,7 @@
 from django import template
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.models import Permission
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
@@ -23,30 +24,73 @@ def appointments(request):
     return render(request, 'home/index.html', context)
 
 
-# Cadastro de enderecos e fotos da barbearia
+# Barbearias
+@ login_required(login_url='/login/')
+def barbershops(request):
+    context = {'segment': 'barbershops' }
+    
+    # Barbearias do usuario
+    if request.user.has_perm('authentication.barber_perm'):
+        user_barbershops = Barbershop.objects.filter(owner=request.user)
+        for barbershop in user_barbershops:
+            # Seleciona a primeira imagem de cada barbearia
+            barbershop.main_img = BarbershopImage.objects.filter(barbershop=barbershop).last()
+            
+        context['user_barbershops'] = user_barbershops
+        print('pode')
+
+    return render(request, 'home/barbershops.html', context)
+
+
+@login_required(login_url='/login/')
+def barbershop_detail(request, barbershop_id):
+    barbershop = Barbershop.objects.get(id=barbershop_id)
+    context = {
+        'segment': 'become_barber',
+        'barbershop': barbershop,
+    }
+    return render(request, 'home/barber/barbershop_detail.html', context)
+
+
 @login_required(login_url='/login/')
 def become_barber(request):
-    msg = None
+    # Se ja tem o cadastro de barbearia em andamento, redireciona para become_barber_2
+    current_barbershop = Barbershop.objects.filter(owner=request.user).filter(completed=False)
+    if current_barbershop:
+        return redirect('become_barber_2')
 
+    user_msg = ''
     if request.method == 'POST':
-        form = BarbershopForm(request.POST or None)
-        images = request.FILES.getlist('images')
-        if form.is_valid():
+        form = BarbershopForm(request.POST)
+        form2 = BarbershopImageForm(request.POST, request.FILES)
+        images = request.FILES.getlist('image')
+
+        if form.is_valid() and form2.is_valid():
             barbershop = form.save(commit=False)
             barbershop.owner = request.user
             barbershop.save()
-            for image in images:
-                BarbershopImage.objects.create(filename=image.name, barbershop=barbershop, image=image)
 
+            print(barbershop)
+            for image in images:
+                BarbershopImage.objects.create(barbershop=barbershop, image=image)
+                print('guardou imagem')
+
+            # Add permissao de barbeiro ao usuario
+            barber_permission = Permission.objects.get(codename='barber_perm')
+            request.user.user_permissions.add(barber_permission)
             return redirect('become_barber_2')
+        else: 
+            user_msg = form.errors.as_text() + ' ' + form2.errors.as_text()
     else:
         form = BarbershopForm()
-        msg = 'Preencha os dados do seu negócio'
+        form_2 = BarbershopImageForm()
+        user_msg = 'Preencha os dados do seu negócio'
      
     context = {
         'segment': 'become_barber',
         'form': form,
-        'msg': msg,
+        'form_2': form_2,
+        'msg': user_msg,
     }
 
     return render(request, 'home/barber/become_barber.html', context)
@@ -54,46 +98,64 @@ def become_barber(request):
 
 # Cadastro de barbearia
 @login_required(login_url='/login/')
+@permission_required('authentication.barber_perm')
 def become_barber_2(request):
+    last_barbershop = Barbershop.objects.filter(owner=request.user).filter(completed=False).first()
+    user_msg = ''
 
-    # if last_barbershop.aindanaocadastrado: redirect(inicio do cadastro)
-
-    msg = None
-
-    last_unfinished_barbershop = Barbershop.objects.filter(completed=False).first()
-    
-    # Não iniciou o cadastro de uma barbearia
-    if last_unfinished_barbershop is None: 
+    # Não iniciou o cadastro de nenhuma barbearia
+    if not last_barbershop: 
         return redirect('become_barber')
 
-    # Se já comecou o cadastro de um barbearia, redireciona para a continuação
-    # É preciso terminar o cadastro de um barbearia por completo
-    # if last_barbershop: 
-        # return redirect('become_barber_2')
-
     if request.method == 'POST':
-        
         form = AddressForm(request.POST)
         if form.is_valid():
-            print('form')
             address = form.save(commit=False)
-            address.barbershop = last_unfinished_barbershop
+            address.barbershop = last_barbershop
             address.save()
-            return redirect('home')
+            
+            # Altera o estado do cadastro da barbearia
+            last_barbershop.completed = True
+            last_barbershop.save()
+            return redirect('barbershops')
         else: 
-            print(form.errors)
+            for error in form.errors.values():
+                user_msg += error
     else:
-        print('nao post')
         form = AddressForm()
      
     context = {
         'segment': 'become_barber',
+        'last_barbershop': last_barbershop,
         'form': form,
-        'msg': msg,
-        'last_barbershop': last_unfinished_barbershop,
+        'msg': user_msg,
     }
 
     return render(request, 'home/barber/become_barber_2.html', context)
+
+
+@login_required(login_url='/login/')
+@permission_required('authentication.barber_perm')
+def barbershop_edit(request, barbershop_id):
+    barbershop = Barbershop.objects.get(id=barbershop_id)  
+    if barbershop.owner != request.user: # Se a barbearia não pertencer ao usuario 
+        redirect('barbershops')
+
+    form = BarbershopForm(request.POST or None, instance=barbershop) 
+    address = Address.objects.get(barbershop_id=barbershop.id)
+    address_form = AddressForm(request.POST or None, instance=address)
+    
+    if form.is_valid() and address_form.is_valid():  
+        form.save()  
+        address_form.save() 
+        return redirect('barbershops')  
+    
+    context = {
+        'barbershop': barbershop,
+        'form': form,
+        'form_2': address_form,
+    }
+    return render(request, 'home/barber/barbershop_edit.html', context)  
 
 
 @login_required(login_url='/login/')
