@@ -53,28 +53,12 @@ SERVICE_NAMES = (
     ('PD', 'Pedicure'),
 )
 
-
-class Address(models.Model):
-    id = models.UUIDField('Id', primary_key=True, default=uuid.uuid4, editable=False)
-    zip = models.IntegerField('CEP')
-    public_place = models.CharField('Logradouro', max_length=50)
-    neighborhood = models.CharField('Bairro', max_length=100)
-    city = models.CharField('Cidade', max_length=50)
-    state = models.CharField('Estado', max_length=2, choices=STATES)
-    complement = models.CharField('Complemento', max_length=2)
-    number = models.IntegerField('Numero')
-
-    def __str__(self):
-        return self.public_place + ' ' + self.zip
-
-
 class Barbershop(models.Model):
     id = models.UUIDField('Id', primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField('Nome', max_length=255)
     cnpj = models.CharField(max_length=14)
-    register_date = models.DateField('Data de nascimento', auto_now_add=True)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    register_date = models.DateField('Data de nascimento', auto_now_add=True)
     opening_hour = models.TimeField('Abertura')
     closing_hour = models.TimeField('Fechamento')
     
@@ -82,15 +66,28 @@ class Barbershop(models.Model):
     completed = models.BooleanField('Cadastro completo', default=False)
     
     def __str__(self):
-        return self.address
+        return self.name
 
 
 #galeria da barbearia com fotos de clientes (os cortes) e fotos da infraestrutura
 class BarbershopImage(models.Model):
     id = models.UUIDField('Id', primary_key=True, default=uuid.uuid4, editable=False)
-    filename = models.CharField(max_length=255)
     barbershop = models.ForeignKey(Barbershop, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='images/')
+
+
+class Address(models.Model):
+    barbershop = models.OneToOneField(Barbershop, on_delete=models.CASCADE, primary_key=True)
+    zip = models.IntegerField('CEP')
+    public_place = models.CharField('Logradouro', max_length=50)
+    neighborhood = models.CharField('Bairro', max_length=100)
+    city = models.CharField('Cidade', max_length=50)
+    state = models.CharField('Estado', max_length=2, choices=STATES)
+    complement = models.CharField('Complemento', max_length=255)
+    number = models.IntegerField('Numero')
+
+    def __str__(self):
+        return self.public_place + ', ' + self.neighborhood + ', n°' + str(self.number) + ' - ' + str(self.zip)
 
 
 # poder filtrar por barbearias que disponibilizam determinado serviço

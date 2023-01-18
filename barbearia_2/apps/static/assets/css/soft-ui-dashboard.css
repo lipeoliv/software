@@ -8180,7 +8180,9 @@ textarea.form-control-lg {
   border-radius: 0.75rem;
   height: 48px;
   width: 48px;
-  transition: all .2s ease-in-out; }
+  transition: all .2s ease-in-out;
+  -o-object-fit: cover;
+     object-fit: cover; }
   .avatar img {
     width: 100%; }
   .avatar + .avatar-content {

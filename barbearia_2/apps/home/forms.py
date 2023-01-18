@@ -1,5 +1,6 @@
 from django.forms import ModelForm
-from django.forms import CharField, TextInput, IntegerField, NumberInput, DateField, DateInput, ModelChoiceField, Select, TimeField, TimeInput, ChoiceField
+from django.forms import CharField, TextInput, IntegerField, NumberInput, DateField, DateInput
+from django.forms import ModelChoiceField, Select, TimeField, TimeInput, ChoiceField, ClearableFileInput
 
 from .models import Address, Service, CreditCard, Barbershop, BarbershopImage, Appointment
 from .models import STATES
@@ -8,7 +9,7 @@ class AddressForm(ModelForm):
     zip = CharField(
         widget=TextInput(
             attrs={
-                "placeholder": "CEP",
+                "placeholder": "Apenas números",
                 "class": "form-control"
             }
         )
@@ -123,7 +124,8 @@ class BarbershopForm(ModelForm):
         widget=TextInput(
             attrs={
                 "placeholder": "Apenas números",
-                "class": "form-control"
+                "class": "form-control",
+                "maxlength": 14,
             }
         )
     )  
@@ -151,9 +153,10 @@ class BarbershopForm(ModelForm):
     class Meta:  
         model = Barbershop  
         fields = [
+            'name',
             'cnpj',
             'opening_hour',
-            'closing_hour'
+            'closing_hour',
         ]  
 
 
@@ -161,11 +164,16 @@ class BarbershopImageForm(ModelForm):
     # estudar como fazer upload de varias images de uma vez
     class Meta:
         model = BarbershopImage
-        fields = [
-            'filename',
-            'barbershop',
-            'image',
-        ]
+        fields = ['image']
+        widgets = {
+            'image': ClearableFileInput(
+                attrs={
+                    'accept': ".png, .jpg, .jpeg",
+                    'multiple': True,
+                    'class': 'form-control',
+                }
+            ),
+        }
 
 
 class AppointmentForm(ModelForm):  

@@ -11,9 +11,9 @@ class User(AbstractUser):
 
     class Meta:
         permissions = [
-            ('Admin', 'Permissao de administrador'),
-            ('Barbeiro', 'Permissao de barbeiro'),
-            ('Usuario', 'Permissao de usuario comum'),
+            ('admin_perm', 'Permissao de administrador'),
+            ('barber_perm', 'Permissao de barbeiro'),
+            ('user_perm', 'Permissao de usuario comum'),
         ]
 
     def __str__(self):

@@ -5,25 +5,6 @@
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
-<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
-<link
-    href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
-    rel="stylesheet"
-/>
-<style>
-  .filepond--item {
-    width: calc(50% - 0.5em);
-  }
-
-  .filepond--panel--backgaround {
-    /*background-image:url('/static/assets/img/curved-images/barber-bg.jpg');*/
-  }
-
-  .filepond--panel-root {
-    border: 1px solid #d2d6da;
-    background-color: #fff;
-  }
-</style>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -32,10 +13,12 @@
       <div class="card card-plain">
         <div class="card-header pb-0 text-left bg-transparent">
           <h4 class="text-info text-gradient">
-            Nova barbearia
+            {{ barbershop.name }}
           </h4>
           <p class="mb-0">
-            Nos conte sobre seu negócio
+            {% if msg %}
+                {{ msg | safe }}
+            {% endif %}
           </p>
         </div>
         <div class="card-body">
@@ -63,23 +46,50 @@
                 <div class="mb-3">
                   {{ form.closing_hour }}
                 </div>
-
-                {% if msg %}
-                  {{ msg | safe }}               
-                {% endif %}
               </div>
 
               <div class="col-lg-6 d-flex flex-column mx-auto">
-                <label>Upload de imagens</label>
+                <label>CEP</label>
                 <div class="mb-3">
-                  <!--input type="file" class="filepond" name="barbershop_images" multiple required-->
-                  {{ form_2.image }}
+                  {{ form_2.zip }}
+                </div>
+
+                <label>Logradouro</label>
+                <div class="mb-3">
+                  {{ form_2.public_place }}
+                </div>
+
+                <label>Bairro</label>
+                <div class="mb-3">
+                  {{ form_2.neighborhood }}
+                </div>
+                
+                <label>Estado</label>
+                <div class="mb-3">
+                  {{ form_2.state }}
+                </div>
+                
+                <label>Cidade</label>
+                <div class="mb-3">
+                  {{ form_2.city }}
+                </div>
+
+                <label>Complemento</label>
+                <div class="mb-3">
+                  {{ form_2.complement }}
+                </div>
+
+                <label>Número</label>
+                <div class="mb-3">
+                  {{ form_2.number }}
                 </div>
                 <div class="text-center">
                   <button type="submit" name="login" class="btn bg-gradient-info w-100 mt-1 mb-0">Prosseguir</button>
                 </div>
               </div>
             </div>
+
+            
           </form>
         </div>
       </div>
