@@ -359,3 +359,21 @@ def destroy_servico(request, id):
     servico.delete()  
     return redirect('user_Servicos') 
     '''
+
+def profile(request):
+    return render(request, 'home/profile.html')
+
+def index(request):
+    return render(request, 'home/index.html')
+
+def tables (request):
+    return render(request, 'home/tables.html')
+
+def billing (request):
+    return render(request, 'home/billing.html')
+
+def promotions(request):
+    return render(request, 'home/promotions.html')
+
+def arrangements(request):
+    return render(request, 'home/arrangements.html')
