@@ -35,9 +35,9 @@ def register_user(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             # Antes de salvar o usuario no banco, adiciona a permissao de usuario comum
-            user = form.save(commit=False)
+            user = form.save()
+            #user.save()
             user.user_permissions.add(Permission.objects.get(codename='user_perm'))
-            user.save()
 
             # Já autentica o usuário criado
             username = form.cleaned_data.get("username")
