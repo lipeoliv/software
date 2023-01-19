@@ -8,14 +8,14 @@
 {% block content %}
 
     <div class="container-fluid">
-      <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('/static/assets/img/curved-images/curved0.jpg'); background-position-y: 50%;">
-        <span class="mask bg-gradient-primary opacity-6"></span>
+      <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image:url('/static/assets/img/curved-images/barber-bg.jpg'); background-position-y: 50%; background-repeat: repeat; background-size: contain;">
+        <span class="mask opacity-6"></span>
       </div>
       <div class="card card-body blur shadow-blur mx-4 mt-n6">
         <div class="row gx-4">
           <div class="col-auto">
-            <div class="avatar avatar-xl position-relative">
-              <img src="/static/assets/img/bruce-mars.jpg" alt="..." class="w-100 border-radius-lg shadow-sm">
+            <div class="avatar avatar-xxl position-relative">
+              <img src="{{ barbershop_main_image.image.url }}" alt="..." class="h-100 border-radius-lg shadow-sm" style="object-fit: cover;">
               <a href="javascript:;" class="btn btn-sm btn-icon-only bg-gradient-light position-absolute bottom-0 end-0 mb-n2 me-n2">
                 <i class="fa fa-pen top-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Image"></i>
               </a>
@@ -24,10 +24,10 @@
           <div class="col-auto my-auto">
             <div class="h-100">
               <h5 class="mb-1">
-                {{ user.name }}
+                {{ barbershop.name }}
               </h5>
               <p class="mb-0 font-weight-bold text-sm">
-                {{ user.firstName }} <!--imprimir se cliente ou barbeiro -->
+                <span class="badge badge-sm bg-gradient-success">Aberto agora</span>
               </p>
             </div>
           </div>
@@ -49,7 +49,7 @@
                         </g>
                       </g>
                     </svg>
-                    <span class="ms-1">Overview</span>
+                    <span class="ms-1">Visão Geral</span>
                   </a>
                 </li>
                 <li class="nav-item">
@@ -67,7 +67,7 @@
                         </g>
                       </g>
                     </svg>
-                    <span class="ms-1">Teams</span>
+                    <span class="ms-1">Galeria</span>
                   </a>
                 </li>
                 <li class="nav-item">
@@ -86,7 +86,7 @@
                         </g>
                       </g>
                     </svg>
-                    <span class="ms-1">Projects</span>
+                    <span class="ms-1">Clientes</span>
                   </a>
                 </li>
               </ul>
@@ -98,7 +98,7 @@
     <div class="container-fluid py-4">
     
       <div class="row my-3">
-        <div class="col-12 col-xl-4">
+        <!--div class="col-12 col-xl-4">
           <div class="card mb-4">
             <div class="card-header pb-0 p-3">
               <h6 class="mb-0">Platform Settings</h6>
@@ -148,13 +148,13 @@
               </ul>
             </div>
           </div>
-        </div>
+        </div-->
         <div class="col-12 col-xl-4">
           <div class="card mb-4">
             <div class="card-header pb-0 p-3">
               <div class="row">
                 <div class="col-md-8 d-flex align-items-center">
-                  <h6 class="mb-0">Profile Information</h6>
+                  <h6 class="mb-0">Descrição da barbearia</h6>
                 </div>
                 <div class="col-md-4 text-right">
                   <a href="javascript:;">
@@ -165,14 +165,15 @@
             </div>
             <div class="card-body p-3">
               <p class="text-sm">
-                Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality).
+                {{ barbershop.bio }}
               </p>
               <hr class="horizontal gray-light my-4">
               <ul class="list-group">
-                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Full Name:</strong> &nbsp; Alec M. Thompson</li>
-                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Mobile:</strong> &nbsp; (44) 123 1234 123</li>
-                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Email:</strong> &nbsp; alecthompson@mail.com</li>
-                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Location:</strong> &nbsp; USA</li>
+                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Proprietário:</strong> &nbsp; {{ barbershop.owner.name }}</li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Celular:</strong> &nbsp; {{ barbershop.cellphone_number }}</li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Telefone:</strong> &nbsp; {{ barbershop.telephone_number }}</li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Email:</strong> &nbsp; {{ barbershop.email }}</li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Desde:</strong> &nbsp; {{ barbershop.register_date }}</li>
                 <li class="list-group-item border-0 ps-0 pb-0">
                   <strong class="text-dark text-sm">Social:</strong> &nbsp;
                   <a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">

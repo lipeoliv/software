@@ -56,12 +56,16 @@ SERVICE_NAMES = (
 class Barbershop(models.Model):
     id = models.UUIDField('Id', primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField('Nome', max_length=255)
-    cnpj = models.CharField(max_length=14)
+    cnpj = models.CharField('CNPJ', max_length=14)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     register_date = models.DateField('Data de nascimento', auto_now_add=True)
     opening_hour = models.TimeField('Abertura')
     closing_hour = models.TimeField('Fechamento')
-    
+    bio = models.TextField('Bio')
+    cellphone_number = models.IntegerField('Celular')
+    telephone_number = models.IntegerField('Telefone')
+    email = models.EmailField('Email')
+
     # estado da barbearia
     completed = models.BooleanField('Cadastro completo', default=False)
     

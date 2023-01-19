@@ -35,19 +35,20 @@ def barbershops(request):
         for barbershop in user_barbershops:
             # Seleciona a primeira imagem de cada barbearia
             barbershop.main_img = BarbershopImage.objects.filter(barbershop=barbershop).last()
-            
-        context['user_barbershops'] = user_barbershops
-        print('pode')
 
+        context['user_barbershops'] = user_barbershops
     return render(request, 'home/barbershops.html', context)
 
 
 @login_required(login_url='/login/')
 def barbershop_detail(request, barbershop_id):
     barbershop = Barbershop.objects.get(id=barbershop_id)
+    barbershop_images = BarbershopImage.objects.filter(barbershop=barbershop)
     context = {
         'segment': 'become_barber',
         'barbershop': barbershop,
+        'barbershop_images': barbershop_images,
+        'barbershop_main_image': barbershop_images[0]
     }
     return render(request, 'home/barber/barbershop_detail.html', context)
 
