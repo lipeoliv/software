@@ -48,7 +48,13 @@
                       <span class="text-xs font-weight-bold mb-0">{{ barbershop.closing_hour }}</span>
                     </td>
                     <td class="align-middle text-center text-sm">
-                      <span class="badge badge-sm bg-gradient-danger">Fechado</span>
+                      <span class="badge badge-sm {% if barbershop.is_open %} bg-gradient-success {% else %} bg-gradient-danger {% endif %}">
+                        {% if barbershop.is_open %}
+                          Aberto 
+                        {% else %} 
+                          Fechado
+                        {% endif %}
+                      </span>
                     </td>
                     <td class="align-middle text-center">
                       <span class="text-secondary text-xs font-weight-bold">{{ barbershop.register_date }}</span>

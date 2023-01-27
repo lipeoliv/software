@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from django.forms import CharField, TextInput, IntegerField, NumberInput, DateField, DateInput
+from django.forms import CharField, TextInput, Textarea, EmailField, EmailInput, IntegerField, NumberInput, DateField, DateInput
 from django.forms import ModelChoiceField, Select, TimeField, TimeInput, ChoiceField, ClearableFileInput
 
 from .models import Address, Service, CreditCard, Barbershop, BarbershopImage, Appointment
@@ -147,6 +147,38 @@ class BarbershopForm(ModelForm):
             }
         )
     )
+    bio = CharField(
+        widget=Textarea(
+            attrs={
+                "placeholder": "Faça uma descrição do seu negócio 🤩",
+                "class": "form-control"
+            }
+        )
+    ) 
+    cellphone_number = CharField(
+        widget=TextInput(
+            attrs={
+                "placeholder": "Telefone celular",
+                "class": "form-control",
+            }
+        )
+    )
+    telephone_number = CharField(
+        widget=TextInput(
+            attrs={
+                "placeholder": "Telefone fixo",
+                "class": "form-control",
+            }
+        )
+    )
+    email = EmailField(
+        widget=EmailInput(
+            attrs={
+                "placeholder": "Email para contato",
+                "class": "form-control"
+            }
+        )
+    )
     # O endereço será um form de endereço no template
     # as fotos será um form no template
     # o proprietário será o id do próprio usuário
@@ -157,6 +189,10 @@ class BarbershopForm(ModelForm):
             'cnpj',
             'opening_hour',
             'closing_hour',
+            'bio', 
+            'cellphone_number',
+            'telephone_number',
+            'email'
         ]  
 
 

@@ -1,3 +1,4 @@
+import datetime
 from django import template
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
@@ -32,9 +33,14 @@ def barbershops(request):
     # Barbearias do usuario
     if request.user.has_perm('authentication.barber_perm'):
         user_barbershops = Barbershop.objects.filter(owner=request.user)
+        current_datetime = datetime.datetime.now().hour 
         for barbershop in user_barbershops:
             # Seleciona a primeira imagem de cada barbearia
-            barbershop.main_img = BarbershopImage.objects.filter(barbershop=barbershop).last()
+            if current_datetime >= barbershop.opening_hour.hour and current_datetime <= barbershop.closing_hour.hour:
+                barbershop.is_open = True
+            else:
+                barbershop.is_open = False
+            barbershop.main_img = BarbershopImage.objects.filter(barbershop=barbershop).first()
 
         context['user_barbershops'] = user_barbershops
     return render(request, 'home/barbershops.html', context)
@@ -44,9 +50,17 @@ def barbershops(request):
 def barbershop_detail(request, barbershop_id):
     barbershop = Barbershop.objects.get(id=barbershop_id)
     barbershop_images = BarbershopImage.objects.filter(barbershop=barbershop)
+    barbershop_address = Address.objects.get(barbershop=barbershop)
+    current_datetime = datetime.datetime.now().hour 
+    if current_datetime >= barbershop.opening_hour.hour and current_datetime <= barbershop.closing_hour.hour:
+        barbershop.is_open = True
+    else:
+        barbershop.is_open = False
+        
     context = {
         'segment': 'become_barber',
         'barbershop': barbershop,
+        'barbershop_address': barbershop_address,
         'barbershop_images': barbershop_images,
         'barbershop_main_image': barbershop_images[0]
     }
@@ -63,10 +77,10 @@ def become_barber(request):
     user_msg = ''
     if request.method == 'POST':
         form = BarbershopForm(request.POST)
-        form2 = BarbershopImageForm(request.POST, request.FILES)
+        form_2 = BarbershopImageForm(request.POST, request.FILES)
         images = request.FILES.getlist('image')
 
-        if form.is_valid() and form2.is_valid():
+        if form.is_valid() and form_2.is_valid():
             barbershop = form.save(commit=False)
             barbershop.owner = request.user
             barbershop.save()
@@ -81,7 +95,7 @@ def become_barber(request):
             request.user.user_permissions.add(barber_permission)
             return redirect('become_barber_2')
         else: 
-            user_msg = form.errors.as_text() + ' ' + form2.errors.as_text()
+            user_msg = form.errors.as_text() + ' ' + form_2.errors.as_text()
     else:
         form = BarbershopForm()
         form_2 = BarbershopImageForm()

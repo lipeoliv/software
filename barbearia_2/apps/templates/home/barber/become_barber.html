@@ -64,6 +64,26 @@
                   {{ form.closing_hour }}
                 </div>
 
+                <label>Bio</label>
+                <div class="mb-3">
+                  {{ form.bio }}
+                </div>
+
+                <label>Telefone celular</label>
+                <div class="mb-3">
+                  {{ form.cellphone_number }}
+                </div>
+
+                <label>Telefone fixo</label>
+                <div class="mb-3">
+                  {{ form.telephone_number }}
+                </div>
+
+                <label>Email</label>
+                <div class="mb-3">
+                  {{ form.email }}
+                </div>
+
                 {% if msg %}
                   {{ msg | safe }}               
                 {% endif %}

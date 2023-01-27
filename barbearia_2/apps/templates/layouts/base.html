@@ -32,7 +32,16 @@
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <link href="/static/assets/css/nucleo-svg.css" rel="stylesheet" />
   <link id="pagestyle" href="/static/assets/css/soft-ui-dashboard.css?v=1.0.0" rel="stylesheet" />
-
+  <style>
+    .row.display-flex {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .row.display-flex > [class*='col-'] {
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
   <!-- Specific CSS goes HERE -->
   {% block stylesheets %}{% endblock stylesheets %}
 
