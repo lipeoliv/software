@@ -8,7 +8,7 @@ from django.template import loader
 from django.urls import reverse
 
 # Modelos
-from .models import User, Barbershop, BarbershopImage, Address
+from .models import User, Barbershop, BarbershopImage, Address, Service
 
 # Forms
 from .forms import BarbershopForm, BarbershopImageForm, AddressForm
@@ -51,16 +51,18 @@ def barbershop_detail(request, barbershop_id):
     barbershop = Barbershop.objects.get(id=barbershop_id)
     barbershop_images = BarbershopImage.objects.filter(barbershop=barbershop)
     barbershop_address = Address.objects.get(barbershop=barbershop)
+    barbershop_services = Service.objects.filter(barbeshop=barbershop)
     current_datetime = datetime.datetime.now().hour 
     if current_datetime >= barbershop.opening_hour.hour and current_datetime <= barbershop.closing_hour.hour:
         barbershop.is_open = True
     else:
         barbershop.is_open = False
-        
+
     context = {
         'segment': 'become_barber',
         'barbershop': barbershop,
         'barbershop_address': barbershop_address,
+        'barbershop_services': barbershop_services,
         'barbershop_images': barbershop_images,
         'barbershop_main_image': barbershop_images[0]
     }
