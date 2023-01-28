@@ -1,0 +1,100 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %} Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="container-fluid py-4">
+      <div class="card col-sm-12 col-md-6 col-xl-4">
+        <div class="card-header pb-0 text-left bg-transparent">
+          <h4 class="text-info text-gradient">
+            {{ barbershop.name }}
+          </h4>
+          <p class="mb-0">
+            {% if msg %}
+                {{ msg | safe }}
+            {% endif %}
+          </p>
+        </div>
+        <div class="card-body">
+          <form role="form text-left" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="d-flex flex-column">
+              <label>CEP</label>
+              <div class="mb-3">
+                {{ form.zip }}
+              </div>
+
+              <label>Logradouro</label>
+              <div class="mb-3">
+                {{ form.public_place }}
+              </div>
+
+              <label>Bairro</label>
+              <div class="mb-3">
+                {{ form.neighborhood }}
+              </div>
+              
+              <label>Estado</label>
+              <div class="mb-3">
+                {{ form.state }}
+              </div>
+              
+              <label>Cidade</label>
+              <div class="mb-3">
+                {{ form.city }}
+              </div>
+
+              <label>Complemento</label>
+              <div class="mb-3">
+                {{ form.complement }}
+              </div>
+
+              <label>Número</label>
+              <div class="mb-3">
+                {{ form.number }}
+              </div>
+              <div class="text-center">
+                <button type="submit" name="login" class="btn bg-gradient-info mt-1 mb-0">Salvar</button>
+              </div>
+            </div>
+
+            
+          </form>
+        </div>
+      </div>
+
+      {% include "includes/footer.html" %}
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+  <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+  <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+  <script src="{% static 'assets/js/pond_pt_br.js' %}"></script>
+  <script>
+    FilePond.registerPlugin(FilePondPluginImagePreview);
+    FilePond.parse(document.body);
+    const pt_br = window["pt-br"];
+    FilePond.setOptions(config);
+  </script>
+  
+  <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
+
+{% endblock javascripts %}

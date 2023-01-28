@@ -3,7 +3,7 @@ from django.forms import CharField, TextInput, Textarea, EmailField, EmailInput,
 from django.forms import ModelChoiceField, Select, TimeField, TimeInput, ChoiceField, ClearableFileInput
 
 from .models import Address, Service, CreditCard, Barbershop, BarbershopImage, Appointment
-from .models import STATES
+from .models import STATES, SERVICE_NAMES
 
 class AddressForm(ModelForm):
     zip = CharField(
@@ -77,8 +77,9 @@ class AddressForm(ModelForm):
 
 
 class ServiceForm(ModelForm):
-    name = CharField(
-        widget=TextInput(
+    name = ChoiceField(
+        choices=SERVICE_NAMES,
+        widget=Select(
             attrs={
                 "placeholder": "Nome",
                 "class": "form-control"

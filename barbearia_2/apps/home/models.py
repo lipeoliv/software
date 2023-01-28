@@ -33,24 +33,24 @@ STATES = (
 )
 
 SERVICE_NAMES = (
-    ('CS', 'Corte Social'),
-    ('CU', 'Corte Undercut'),
-    ('CN', 'Corte Navalhado'),
-    ('CP', 'Corte Pigmentado'),
-    ('CB', 'Corte + Barba'),
-    ('CL', 'Corte + Luzes'),
-    ('CA', 'Corte + Alisamento'),
-    ('LZ', 'Luzes'),
-    ('DS', 'Desenho'),
-    ('BR', 'Barba'),
-    ('BP', 'Barba Pigmentada'),
-    ('PZ', 'Pezinho'),
-    ('SB', 'Sobrancelha'),
-    ('MF', 'Massagem Facial'),
-    ('MC', 'Massagem Corporal'),
-    ('LP', 'Limpeza de Pele'),
-    ('MN', 'Manicure'),
-    ('PD', 'Pedicure'),
+    ('Corte Social', 'Corte Social'),
+    ('Corte Undercut', 'Corte Undercut'),
+    ('Corte Navalhado', 'Corte Navalhado'),
+    ('Corte Pigmentado', 'Corte Pigmentado'),
+    ('Corte + Barba', 'Corte + Barba'),
+    ('Corte + Luzes', 'Corte + Luzes'),
+    ('Corte + Alisamento', 'Corte + Alisamento'),
+    ('Luzes', 'Luzes'),
+    ('Desenho', 'Desenho'),
+    ('Barba', 'Barba'),
+    ('Barba Pigmentada', 'Barba Pigmentada'),
+    ('Pezinho', 'Pezinho'),
+    ('Sobrancelha', 'Sobrancelha'),
+    ('Massagem Facial', 'Massagem Facial'),
+    ('Massagem Corporal', 'Massagem Corporal'),
+    ('Limpeza de Pele', 'Limpeza de Pele'),
+    ('Manicure', 'Manicure'),
+    ('Pedicure', 'Pedicure'),
 )
 
 class Barbershop(models.Model):
@@ -99,10 +99,10 @@ class Address(models.Model):
 # ele escolherá o serviço e dirá quanto que ele cobrará na sua barbearia
 class Service(models.Model):
     id = models.UUIDField('Id', primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField('Nome', max_length=4, choices=SERVICE_NAMES)
+    name = models.CharField('Nome', max_length=30, choices=SERVICE_NAMES)
     price = models.DecimalField('Preço', max_digits=5, decimal_places=2)
     estimated_time = models.IntegerField('Tempo Estimado') # Em minutos
-    barbeshop = models.ForeignKey(Barbershop, on_delete=models.CASCADE)
+    barbershop = models.ForeignKey(Barbershop, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

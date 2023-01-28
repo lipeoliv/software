@@ -10,89 +10,69 @@
 {% block content %}
 
     <div class="container-fluid py-4">
-      <div class="card card-plain">
-        <div class="card-header pb-0 text-left bg-transparent">
-          <h4 class="text-info text-gradient">
-            {{ barbershop.name }}
-          </h4>
-          <p class="mb-0">
-            {% if msg %}
-                {{ msg | safe }}
-            {% endif %}
-          </p>
-        </div>
-        <div class="card-body">
-          <form role="form text-left" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="row">
-
-              <div class="col-lg-6 d-flex flex-column mx-auto">
+      <div class="row">
+        <div class="card col-sm-12 col-md-6 col-xl-4">
+          <div class="card-header pb-0 text-left bg-transparent">
+            <h4 class="text-info text-gradient">
+              {{ barbershop.name }}
+            </h4>
+          </div>
+          <div class="card-body p-3">
+            <form role="form text-left" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="d-flex flex-column">
                 <label>Nome</label>
-                <div class="mb-3">
-                  {{ form.name }}
-                </div>
+                  <div class="mb-3">
+                    {{ form.name }}
+                  </div>
 
-                <label>CNPJ</label>
-                <div class="mb-3">
-                  {{ form.cnpj }}
-                </div>
+                  <label>CNPJ</label>
+                  <div class="mb-3">
+                    {{ form.cnpj }}
+                  </div>
 
-                <label>Hora de abertura (0 - 24h)</label>
-                <div class="mb-3">
-                  {{ form.opening_hour }}
-                </div>
+                  <label>Hora de abertura (0 - 24h)</label>
+                  <div class="mb-3">
+                    {{ form.opening_hour }}
+                  </div>
 
-                <label>Hora de fechamento (0 - 24h)</label>
-                <div class="mb-3">
-                  {{ form.closing_hour }}
-                </div>
+                  <label>Hora de fechamento (0 - 24h)</label>
+                  <div class="mb-3">
+                    {{ form.closing_hour }}
+                  </div>
+
+                  <label>Bio</label>
+                  <div class="mb-3">
+                    {{ form.bio }}
+                  </div>
+
+                  <label>Telefone celular</label>
+                  <div class="mb-3">
+                    {{ form.cellphone_number }}
+                  </div>
+
+                  <label>Telefone fixo</label>
+                  <div class="mb-3">
+                    {{ form.telephone_number }}
+                  </div>
+
+                  <label>Email</label>
+                  <div class="mb-3">
+                    {{ form.email }}
+                  </div>
+
+                  {% if msg %}
+                    {{ msg | safe }}               
+                  {% endif %}
+                  <div class="text-right">
+                    <button type="submit" name="login" class="btn bg-gradient-info mt-1 mb-0">Salvar</button>
+                  </div>
               </div>
-
-              <div class="col-lg-6 d-flex flex-column mx-auto">
-                <label>CEP</label>
-                <div class="mb-3">
-                  {{ form_2.zip }}
-                </div>
-
-                <label>Logradouro</label>
-                <div class="mb-3">
-                  {{ form_2.public_place }}
-                </div>
-
-                <label>Bairro</label>
-                <div class="mb-3">
-                  {{ form_2.neighborhood }}
-                </div>
-                
-                <label>Estado</label>
-                <div class="mb-3">
-                  {{ form_2.state }}
-                </div>
-                
-                <label>Cidade</label>
-                <div class="mb-3">
-                  {{ form_2.city }}
-                </div>
-
-                <label>Complemento</label>
-                <div class="mb-3">
-                  {{ form_2.complement }}
-                </div>
-
-                <label>Número</label>
-                <div class="mb-3">
-                  {{ form_2.number }}
-                </div>
-                <div class="text-center">
-                  <button type="submit" name="login" class="btn bg-gradient-info w-100 mt-1 mb-0">Prosseguir</button>
-                </div>
-              </div>
-            </div>
-
-            
-          </form>
+            </form>
+          </div>
         </div>
       </div>
+      
 
       {% include "includes/footer.html" %}
 

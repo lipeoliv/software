@@ -10,11 +10,14 @@ urlpatterns = [
     path('agendamentos/', views.appointments, name='appointments'),
 
     # Barbearias
-    path('barbearias', views.barbershops, name='barbershops'),
-    path('barbearia_detalhes/<uuid:barbershop_id>', views.barbershop_detail, name='barbershop_detail'),
+    path('barbearias/', views.barbershops, name='barbershops'),
+    path('barbearia/<uuid:barbershop_id>/', views.barbershop_detail, name='barbershop_detail'),
+    path('barbearia/<uuid:barbershop_id>/servicos/', views.barbershop_services, name='barbershop_services'),
     path('editar_barbearia/<uuid:barbershop_id>', views.barbershop_edit, name='barbershop_edit'),
+    path('editar_barbearia_endereco/<uuid:barbershop_id>', views.barbershop_edit_address, name='barbershop_edit_address'),
     path('nova_barbearia/', views.become_barber, name='become_barber'),
-    path('nova_barbearia_2/', views.become_barber_2, name='become_barber_2'),
+    path('nova_barbearia_endereco/', views.become_barber_2, name='become_barber_2'),
+    
     path('profile/', views.profile, name='profile'),
     path('index/', views.index, name='index'),
     path('tables/', views.tables, name='tables'),

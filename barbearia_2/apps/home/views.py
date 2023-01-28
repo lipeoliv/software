@@ -11,7 +11,7 @@ from django.urls import reverse
 from .models import User, Barbershop, BarbershopImage, Address, Service
 
 # Forms
-from .forms import BarbershopForm, BarbershopImageForm, AddressForm
+from .forms import BarbershopForm, BarbershopImageForm, AddressForm, ServiceForm
 
 @login_required(login_url='/login/')
 def index(request):
@@ -44,29 +44,6 @@ def barbershops(request):
 
         context['user_barbershops'] = user_barbershops
     return render(request, 'home/barbershops.html', context)
-
-
-@login_required(login_url='/login/')
-def barbershop_detail(request, barbershop_id):
-    barbershop = Barbershop.objects.get(id=barbershop_id)
-    barbershop_images = BarbershopImage.objects.filter(barbershop=barbershop)
-    barbershop_address = Address.objects.get(barbershop=barbershop)
-    barbershop_services = Service.objects.filter(barbeshop=barbershop)
-    current_datetime = datetime.datetime.now().hour 
-    if current_datetime >= barbershop.opening_hour.hour and current_datetime <= barbershop.closing_hour.hour:
-        barbershop.is_open = True
-    else:
-        barbershop.is_open = False
-
-    context = {
-        'segment': 'become_barber',
-        'barbershop': barbershop,
-        'barbershop_address': barbershop_address,
-        'barbershop_services': barbershop_services,
-        'barbershop_images': barbershop_images,
-        'barbershop_main_image': barbershop_images[0]
-    }
-    return render(request, 'home/barber/barbershop_detail.html', context)
 
 
 @login_required(login_url='/login/')
@@ -148,7 +125,73 @@ def become_barber_2(request):
         'msg': user_msg,
     }
 
-    return render(request, 'home/barber/become_barber_2.html', context)
+    return render(request, 'home/barber/become_barber_address.html', context)
+
+
+@login_required(login_url='/login/')
+@permission_required('authentication.barber_perm')
+def barbershop_detail(request, barbershop_id):
+    barbershop = Barbershop.objects.get(id=barbershop_id)  
+    
+    # Se a barbearia não pertencer ao usuario atual
+    if barbershop.owner != request.user:  
+        redirect('barbershops')
+
+    barbershop_images = BarbershopImage.objects.filter(barbershop=barbershop)
+    barbershop_address = Address.objects.get(barbershop=barbershop)
+    barbershop_services = Service.objects.filter(barbershop=barbershop)
+    
+    # Verifica se a barbearia está funcionando
+    current_datetime = datetime.datetime.now().hour 
+    if current_datetime >= barbershop.opening_hour.hour and current_datetime <= barbershop.closing_hour.hour:
+        barbershop.is_open = True
+    else:
+        barbershop.is_open = False
+
+    context = {
+        'segment': 'become_barber',
+        'barbershop': barbershop,
+        'barbershop_address': barbershop_address,
+        'barbershop_services': barbershop_services,
+        'barbershop_images': barbershop_images,
+        'barbershop_main_image': barbershop_images[0]
+    }
+    return render(request, 'home/barber/barbershop_detail.html', context)
+
+
+@login_required(login_url='/login/')
+@permission_required('authentication.barber_perm')
+def barbershop_services(request, barbershop_id):
+    barbershop = Barbershop.objects.get(id=barbershop_id)  
+    user_msg = ''
+    # Se a barbearia não pertencer ao usuario atual
+    if barbershop.owner != request.user:  
+        redirect('barbershops')
+
+    if request.method == 'POST':
+        form = ServiceForm(request.POST)
+        if form.is_valid():
+            service = form.save(commit=False)
+            print(service)
+            service.barbershop = barbershop
+            service.save()
+            return redirect('barbershop_detail', barbershop_id=barbershop.id) 
+        else: 
+            for error in form.errors.values():
+                user_msg += error
+    else:
+        form = ServiceForm()
+
+    barbershop_services = Service.objects.filter(barbershop=barbershop)
+
+    context = {
+        'segment': 'become_barber',
+        'barbershop': barbershop,
+        'form': form,
+        'msg': user_msg,
+    }
+    return render(request, 'home/barber/barbershop_edit_services.html', context)
+
 
 
 @login_required(login_url='/login/')
@@ -158,22 +201,36 @@ def barbershop_edit(request, barbershop_id):
     if barbershop.owner != request.user: # Se a barbearia não pertencer ao usuario 
         redirect('barbershops')
 
-    form = BarbershopForm(request.POST or None, instance=barbershop) 
-    address = Address.objects.get(barbershop_id=barbershop.id)
-    address_form = AddressForm(request.POST or None, instance=address)
+    form = BarbershopForm(request.POST or None, instance=barbershop)
     
-    if form.is_valid() and address_form.is_valid():  
-        form.save()  
-        address_form.save() 
-        return redirect('barbershops')  
+    if form.is_valid():  
+        form.save()
+        return redirect('barbershop_detail', barbershop_id=barbershop.id) 
     
     context = {
         'barbershop': barbershop,
         'form': form,
-        'form_2': address_form,
     }
     return render(request, 'home/barber/barbershop_edit.html', context)  
 
+
+@login_required(login_url='/login/')
+@permission_required('authentication.barber_perm')
+def barbershop_edit_address(request, barbershop_id):
+    barbershop = Barbershop.objects.get(id=barbershop_id)  
+    if barbershop.owner != request.user: # Se a barbearia não pertencer ao usuario 
+        redirect('barbershops')
+
+    form = AddressForm(request.POST or None, instance=barbershop.address)
+    if form.is_valid():  
+        form.save()
+        return redirect('barbershop_detail', barbershop_id=barbershop.id)  
+    
+    context = {
+        'barbershop': barbershop,
+        'form': form,
+    }
+    return render(request, 'home/barber/barbershop_edit_address.html', context)
 
 @login_required(login_url='/login/')
 def pages(request):
