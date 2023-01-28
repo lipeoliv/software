@@ -14,10 +14,12 @@ urlpatterns = [
     path('barbearia/<uuid:barbershop_id>/', views.barbershop_detail, name='barbershop_detail'),
     path('barbearia/<uuid:barbershop_id>/servicos/', views.barbershop_services, name='barbershop_services'),
     path('editar_barbearia/<uuid:barbershop_id>', views.barbershop_edit, name='barbershop_edit'),
-    path('editar_barbearia_endereco/<uuid:barbershop_id>', views.barbershop_edit_address, name='barbershop_edit_address'),
+    path('editar_barbearia_endereco/<uuid:barbershop_id>/', views.barbershop_edit_address, name='barbershop_edit_address'),
+    path('editar_barbearia_servicos/<uuid:service_id>/', views.barbershop_edit_services, name='barbershop_edit_services'),
     path('nova_barbearia/', views.become_barber, name='become_barber'),
     path('nova_barbearia_endereco/', views.become_barber_2, name='become_barber_2'),
     
+    # Usuário comum
     path('profile/', views.profile, name='profile'),
     path('index/', views.index, name='index'),
     path('tables/', views.tables, name='tables'),
