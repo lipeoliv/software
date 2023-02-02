@@ -40,12 +40,14 @@ def register_user(request):
             user.user_permissions.add(Permission.objects.get(codename='user_perm'))
 
             # Já autentica o usuário criado
-            username = form.cleaned_data.get("username")
+            username = form.cleaned_data.get("cpf")
             raw_password = form.cleaned_data.get("password1")
             user = authenticate(username=username, password=raw_password)
             if user is not None:
                 login(request, user)
                 return redirect("/")
+            else:
+                msg = "Não foi possível fazer login"
         else:
             msg = 'Dados inválidos'
     else:

@@ -134,6 +134,7 @@
           </a>
         </li>
         
+        {% if perms.authentication.barber_perm %}
         <li class="nav-item mt-3">
           <h6 class="ps-4 text-uppercase text-xs font-weight-bolder opacity-6">Minha Barbearias</h6>
         </li>
@@ -259,7 +260,7 @@
             <span class="nav-link-text ms-1">Caixa</span>
           </a>
         </li>
-        
+        {% endif %}
         
       </ul>
     </div>
