@@ -29,10 +29,12 @@ def promotions(request):
 def arrangements(request):
     return render(request, 'home/arrangements.html')
 
+
+# Listar todas barbearias
 @login_required(login_url='/login/')
 def index(request):
     context = {'segment': 'index'}
-    barbershops = Barbershop.objects.filter(owner=request.user)
+    barbershops = Barbershop.objects.filter(owner=request.user).filter(completed=True)
     current_datetime = datetime.datetime.now().hour 
     for barbershop in barbershops:
         # Seleciona a primeira imagem de cada barbearia
@@ -48,13 +50,14 @@ def index(request):
     return render(request, 'home/barbershops.html', context)
 
 
+# ver o que é e remover
 @login_required(login_url='/login/')
 def appointments(request):
     context = {'segment': 'appointments'}
     return render(request, 'home/arrangements.html', context)
 
 
-# Barbearias
+# Minhas Barbearias
 @ login_required(login_url='/login/')
 def barbershops(request):
     context = {'segment': 'barbershops' }
@@ -73,6 +76,38 @@ def barbershops(request):
 
         context['user_barbershops'] = user_barbershops
     return render(request, 'home/barber/barbershops_owner.html', context)
+
+
+@ login_required(login_url='/login/')
+def make_appointment(request, barbershop_id):
+    barbershop = Barbershop.objects.get(id=barbershop_id)  
+    
+    # Se a barbearia não pertencer ao usuario atual
+    if barbershop.owner != request.user:  
+        redirect('barbershops')
+
+    barbershop_images = BarbershopImage.objects.filter(barbershop=barbershop)
+    barbershop_address = Address.objects.get(barbershop=barbershop)
+    barbershop_services = Service.objects.filter(barbershop=barbershop)
+    
+    # Verifica se a barbearia está funcionando
+    current_datetime = datetime.datetime.now().hour 
+    opening = barbershop.opening_hour.hour
+    closing = barbershop.closing_hour.hour
+    if current_datetime >= opening and current_datetime <= closing:
+        barbershop.is_open = True
+    else:
+        barbershop.is_open = False
+
+    context = {
+        'segment': 'become_barber',
+        'barbershop': barbershop,
+        'barbershop_address': barbershop_address,
+        'barbershop_services': barbershop_services,
+        'barbershop_images': barbershop_images,
+        'barbershop_main_image': barbershop_images[0]
+    }
+    return render(request, 'home/client/barbershop_detail.html', context)
 
 
 @login_required(login_url='/login/')
